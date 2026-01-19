@@ -41,7 +41,7 @@ struct HomeView: View {
         .alert("Import Failed", isPresented: $showingImportError) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("The file couldn't be imported. Make sure it's a valid hunt file.")
+            Text("The file couldn't be imported. Make sure it's a valid Wander file.")
         }
         .withAppBackground()
     }
@@ -58,7 +58,7 @@ struct HomeView: View {
                     .foregroundColor(.primary)
             }
 
-            Text("Find an adventure")
+            Text("Go on an adventure")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
