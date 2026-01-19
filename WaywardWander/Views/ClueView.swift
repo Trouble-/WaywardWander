@@ -167,17 +167,17 @@ struct ClueView: View {
             case .text:
                 HStack {
                     Image(systemName: "lightbulb.fill")
-                        .foregroundColor(.yellow)
+                        .foregroundColor(AppTheme.accent)
                     Text(hint.content ?? "")
                         .font(.body)
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.yellow.opacity(0.1))
+                .background(AppTheme.accentLight)
                 .cornerRadius(12)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.yellow.opacity(0.5), lineWidth: 2)
+                        .stroke(AppTheme.accentBorder, lineWidth: 2)
                 )
 
             case .compass:

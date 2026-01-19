@@ -41,7 +41,7 @@ struct RevealView: View {
                 VStack(spacing: 24) {
                     Image(systemName: "star.fill")
                         .font(.system(size: 50))
-                        .foregroundColor(.yellow)
+                        .foregroundColor(AppTheme.accent)
 
                 Text("Discovery!")
                     .font(.largeTitle)
@@ -67,11 +67,11 @@ struct RevealView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
                     .padding()
-                    .background(Color.yellow.opacity(0.1))
+                    .background(AppTheme.accentLight)
                     .cornerRadius(16)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.yellow.opacity(0.5), lineWidth: 2)
+                            .stroke(AppTheme.accentBorder, lineWidth: 2)
                     )
 
                 Button(action: onContinue) {
