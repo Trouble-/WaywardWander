@@ -79,12 +79,12 @@ struct ClueView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue.opacity(0.1))
-                        .foregroundColor(.blue)
+                        .background(AppTheme.infoLight)
+                        .foregroundColor(AppTheme.info)
                         .cornerRadius(12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                                .stroke(AppTheme.infoBorder, lineWidth: 2)
                         )
                     }
                 }
@@ -93,28 +93,28 @@ struct ClueView: View {
                     VStack(spacing: 12) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 50))
-                            .foregroundColor(.green)
+                            .foregroundColor(AppTheme.success)
 
                         Text("You've arrived!")
                             .font(.headline)
-                            .foregroundColor(.green)
+                            .foregroundColor(AppTheme.success)
 
                         Button(action: onArrival) {
                             Text("See what's here")
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(Color.green)
+                                .background(AppTheme.success)
                                 .foregroundColor(.white)
                                 .cornerRadius(12)
                         }
                     }
                     .padding()
-                    .background(Color.green.opacity(0.1))
+                    .background(AppTheme.successLight)
                     .cornerRadius(16)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.green.opacity(0.5), lineWidth: 2)
+                            .stroke(AppTheme.successBorder, lineWidth: 2)
                     )
                 }
 
@@ -199,7 +199,7 @@ struct ClueView: View {
             case .distance:
                 HStack {
                     Image(systemName: "location.fill")
-                        .foregroundColor(.blue)
+                        .foregroundColor(AppTheme.info)
                     if let distance = locationManager.distanceToTarget {
                         Text(formatDistance(distance))
                             .font(.title2)
@@ -211,11 +211,11 @@ struct ClueView: View {
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(Color.blue.opacity(0.1))
+                .background(AppTheme.infoLight)
                 .cornerRadius(12)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                        .stroke(AppTheme.infoBorder, lineWidth: 2)
                 )
             }
         }

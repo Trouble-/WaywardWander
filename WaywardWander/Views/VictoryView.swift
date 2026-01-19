@@ -71,23 +71,23 @@ struct VictoryView: View {
             VStack(spacing: 12) {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
+                        .foregroundColor(AppTheme.success)
                     Text("\(hunt.clues.count) locations discovered")
                 }
 
                 HStack {
                     Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
+                        .foregroundColor(AppTheme.accent)
                     Text("Hunt complete!")
                 }
             }
             .font(.subheadline)
             .padding()
-            .background(Color.green.opacity(0.1))
+            .background(AppTheme.successLight)
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.green.opacity(0.5), lineWidth: 2)
+                    .stroke(AppTheme.successBorder, lineWidth: 2)
             )
 
             Spacer()

@@ -17,4 +17,14 @@ enum AppTheme {
 
     // Compass arrow color
     static let compass = Color(red: 0.2, green: 0.45, blue: 0.5)
+
+    // Success/arrival - mint green #3DB489
+    static let success = Color(red: 0.24, green: 0.71, blue: 0.54)
+    static let successLight = Color(red: 0.24, green: 0.71, blue: 0.54).opacity(0.1)
+    static let successBorder = Color(red: 0.24, green: 0.71, blue: 0.54).opacity(0.5)
+
+    // Info/hints - cobalt blue #1338BE
+    static let info = Color(red: 0.07, green: 0.22, blue: 0.75)
+    static let infoLight = Color(red: 0.07, green: 0.22, blue: 0.75).opacity(0.1)
+    static let infoBorder = Color(red: 0.07, green: 0.22, blue: 0.75).opacity(0.5)
 }
