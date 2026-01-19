@@ -58,7 +58,7 @@ struct HomeView: View {
                     .foregroundColor(.primary)
             }
 
-            Text("Choose your adventure")
+            Text("Find an adventure")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
@@ -102,7 +102,7 @@ struct HomeView: View {
         Button(action: { showingFilePicker = true }) {
             HStack {
                 Image(systemName: "square.and.arrow.down")
-                Text("Import Hunt")
+                Text("Import Quest")
             }
             .font(.headline)
             .foregroundColor(.white)
