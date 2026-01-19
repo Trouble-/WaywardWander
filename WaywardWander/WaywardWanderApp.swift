@@ -82,9 +82,13 @@ struct ContentView: View {
                     onBackToIntro: {
                         goToHome()
                     },
-                    onPreviousClue: currentClueIndex > 0 ? {
-                        goToPreviousClue()
-                    } : nil
+                    onPreviousClue: {
+                        if currentClueIndex > 0 {
+                            goToPreviousClue()
+                        } else {
+                            gameState = .intro
+                        }
+                    }
                 )
             }
 
