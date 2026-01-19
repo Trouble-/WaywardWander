@@ -17,7 +17,7 @@ struct VictoryView: View {
                         Text("Home")
                     }
                     .font(.subheadline)
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppTheme.accent)
                 }
 
                 Spacer()
@@ -64,7 +64,7 @@ struct VictoryView: View {
                 Text(hunt.title)
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppTheme.accent)
                     .multilineTextAlignment(.center)
             }
 
@@ -99,7 +99,7 @@ struct VictoryView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(AppTheme.accent)
                     .foregroundColor(.white)
                     .cornerRadius(12)
                 }

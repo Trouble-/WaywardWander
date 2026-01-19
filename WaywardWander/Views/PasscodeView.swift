@@ -19,7 +19,7 @@ struct PasscodeView: View {
                         Text("Start")
                     }
                     .font(.subheadline)
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppTheme.accent)
                 }
 
                 Spacer()
@@ -43,7 +43,7 @@ struct PasscodeView: View {
                 VStack(spacing: 16) {
                     Image(systemName: "lock.fill")
                         .font(.system(size: 50))
-                        .foregroundColor(.orange)
+                        .foregroundColor(AppTheme.accent)
 
                 Text("Enter Passcode")
                     .font(.title)
@@ -77,7 +77,7 @@ struct PasscodeView: View {
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(enteredPasscode.isEmpty ? Color.gray : Color.orange)
+                        .background(enteredPasscode.isEmpty ? Color.gray : AppTheme.accent)
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }

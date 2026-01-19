@@ -19,7 +19,7 @@ struct RevealView: View {
                         Text("Start")
                     }
                     .font(.subheadline)
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppTheme.accent)
                 }
 
                 Spacer()
@@ -82,7 +82,7 @@ struct RevealView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(AppTheme.accent)
                     .foregroundColor(.white)
                     .cornerRadius(12)
                 }

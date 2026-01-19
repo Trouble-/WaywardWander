@@ -6,8 +6,8 @@ struct BackgroundView: View {
             // Gradient background
             LinearGradient(
                 colors: [
-                    Color.orange.opacity(0.3),
-                    Color.orange.opacity(0.1),
+                    AppTheme.accent.opacity(0.2),
+                    AppTheme.accent.opacity(0.05),
                     Color(.systemBackground)
                 ],
                 startPoint: .topLeading,

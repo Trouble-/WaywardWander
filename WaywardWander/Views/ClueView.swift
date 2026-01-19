@@ -21,7 +21,7 @@ struct ClueView: View {
                         Text("Start")
                     }
                     .font(.subheadline)
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppTheme.accent)
                 }
 
                 Spacer()
@@ -50,7 +50,7 @@ struct ClueView: View {
                 VStack(spacing: 16) {
                     Image(systemName: "scroll")
                         .font(.system(size: 40))
-                        .foregroundColor(.orange)
+                        .foregroundColor(AppTheme.accent)
 
                     Text(clue.initialClue)
                         .font(.title3)
@@ -58,11 +58,11 @@ struct ClueView: View {
                         .padding(.horizontal)
                 }
                 .padding()
-                .background(Color.orange.opacity(0.1))
+                .background(AppTheme.accentLight)
                 .cornerRadius(16)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.orange.opacity(0.5), lineWidth: 2)
+                        .stroke(AppTheme.accentBorder, lineWidth: 2)
                 )
 
                 ForEach(0..<hintsRevealed, id: \.self) { index in
@@ -189,11 +189,11 @@ struct ClueView: View {
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(Color.orange.opacity(0.1))
+                .background(AppTheme.accentLight)
                 .cornerRadius(12)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.orange.opacity(0.5), lineWidth: 2)
+                        .stroke(AppTheme.accentBorder, lineWidth: 2)
                 )
 
             case .distance:

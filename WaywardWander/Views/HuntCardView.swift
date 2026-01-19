@@ -18,7 +18,7 @@ struct HuntCardView: View {
                         HStack(spacing: 12) {
                             Label("\(hunt.clues.count)", systemImage: "mappin.circle.fill")
                                 .font(.subheadline)
-                                .foregroundColor(.orange)
+                                .foregroundColor(AppTheme.accent)
 
                             Label(huntDifficulty, systemImage: "figure.walk")
                                 .font(.subheadline)
@@ -30,7 +30,7 @@ struct HuntCardView: View {
 
                     Image(systemName: "chevron.right.circle.fill")
                         .font(.title2)
-                        .foregroundColor(.orange)
+                        .foregroundColor(AppTheme.accent)
                 }
 
                 Text(hunt.description)
@@ -47,7 +47,7 @@ struct HuntCardView: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .strokeBorder(Color.orange.opacity(0.3), lineWidth: 1)
+                    .strokeBorder(AppTheme.accent.opacity(0.3), lineWidth: 1)
             )
         }
         .buttonStyle(.plain)

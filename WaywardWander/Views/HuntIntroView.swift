@@ -11,7 +11,7 @@ struct HuntIntroView: View {
             VStack(spacing: 20) {
                 Image(systemName: "map.fill")
                     .font(.system(size: 70))
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppTheme.accent)
 
                 Text(hunt.title)
                     .font(.largeTitle)
@@ -58,7 +58,7 @@ struct HuntIntroView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.orange)
+                .background(AppTheme.accent)
                 .foregroundColor(.white)
                 .cornerRadius(12)
             }

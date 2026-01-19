@@ -62,19 +62,19 @@ struct HuntImage: View {
             // Placeholder for missing images
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.orange.opacity(0.1))
+                    .fill(AppTheme.accentLight)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .strokeBorder(Color.orange.opacity(0.3), lineWidth: 2)
+                            .strokeBorder(AppTheme.accentBorder, lineWidth: 2)
                     )
                 VStack(spacing: 8) {
                     Image(systemName: "photo.on.rectangle")
                         .font(.system(size: 40))
-                        .foregroundColor(.orange)
+                        .foregroundColor(AppTheme.accent)
                     Text("Photo \(index + 1) of \(totalCount)")
                         .font(.subheadline)
                         .fontWeight(.medium)
-                        .foregroundColor(.orange)
+                        .foregroundColor(AppTheme.accent)
                     Text(imageName)
                         .font(.caption2)
                         .foregroundColor(.secondary)

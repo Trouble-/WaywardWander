@@ -51,7 +51,7 @@ struct HomeView: View {
             HStack(spacing: 12) {
                 Image(systemName: "map.fill")
                     .font(.system(size: 36))
-                    .foregroundColor(.orange)
+                    .foregroundColor(AppTheme.accent)
 
                 Text("Wayward Wander")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
@@ -84,7 +84,7 @@ struct HomeView: View {
 
             Image(systemName: "map")
                 .font(.system(size: 60))
-                .foregroundColor(.orange.opacity(0.5))
+                .foregroundColor(AppTheme.accent.opacity(0.5))
 
             Text("No Hunts Available")
                 .font(.title2)
@@ -108,7 +108,7 @@ struct HomeView: View {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 400)
-            .background(Color.orange)
+            .background(AppTheme.accent)
             .cornerRadius(12)
         }
         .frame(maxWidth: .infinity)

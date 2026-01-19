@@ -29,7 +29,7 @@ struct CompassView: View {
                     .offset(y: -110)
 
                 ArrowShape()
-                    .fill(Color.orange)
+                    .fill(AppTheme.compass)
                     .frame(width: 40, height: 120)
                     .rotationEffect(.degrees(rotation))
                     .animation(.easeInOut(duration: 0.3), value: rotation)
