@@ -61,10 +61,12 @@ struct ContentView: View {
     private func huntView(hunt: Hunt) -> some View {
         switch gameState {
         case .intro:
-            HuntIntroView(hunt: hunt) {
+            HuntIntroView(hunt: hunt, onStart: {
                 locationManager.requestAuthorization()
                 gameState = .playing
-            }
+            }, onBackToHome: {
+                selectedHunt = nil
+            })
 
         case .playing:
             if let clue = currentClue {

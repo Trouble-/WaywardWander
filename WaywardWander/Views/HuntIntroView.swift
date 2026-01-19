@@ -3,9 +3,27 @@ import SwiftUI
 struct HuntIntroView: View {
     let hunt: Hunt
     let onStart: () -> Void
+    let onBackToHome: () -> Void
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: 0) {
+            HStack {
+                Button(action: onBackToHome) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("Home")
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(AppTheme.accent)
+                }
+
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color(.systemBackground))
+
+            VStack(spacing: 32) {
             Spacer()
 
             VStack(spacing: 20) {
@@ -64,8 +82,9 @@ struct HuntIntroView: View {
             }
             .padding(.horizontal)
             .padding(.bottom, 40)
+            }
+            .padding()
         }
-        .padding()
         .withAppBackground()
     }
 }
