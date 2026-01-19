@@ -43,6 +43,10 @@ struct HuntIntroView: View {
             .padding()
             .background(Color.gray.opacity(0.1))
             .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.gray.opacity(0.4), lineWidth: 2)
+            )
 
             Spacer()
 
@@ -62,5 +66,6 @@ struct HuntIntroView: View {
             .padding(.bottom, 40)
         }
         .padding()
+        .withAppBackground()
     }
 }

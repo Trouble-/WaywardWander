@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		79EBCC352F1DD2EF007AAF44 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 79EBCC342F1DD2EF007AAF44 /* ZIPFoundation */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		795DE8DA2F1C215A00987D11 /* WaywardWander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaywardWander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79EBCC352F1DD2EF007AAF44 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = WaywardWander;
 			packageProductDependencies = (
+				79EBCC342F1DD2EF007AAF44 /* ZIPFoundation */,
 			);
 			productName = WaywardWander;
 			productReference = 795DE8DA2F1C215A00987D11 /* WaywardWander.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 795DE8D12F1C215A00987D11;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				79EBCC332F1DD2EF007AAF44 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 795DE8DB2F1C215A00987D11 /* Products */;
 			projectDirPath = "";
@@ -253,7 +262,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WaywardWander/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wayward Wander needs your location to guide you to scavenger hunt destinations and show you how close you are to each clue.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -285,7 +294,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WaywardWander/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wayward Wander needs your location to guide you to scavenger hunt destinations and show you how close you are to each clue.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -330,6 +339,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		79EBCC332F1DD2EF007AAF44 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.20;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		79EBCC342F1DD2EF007AAF44 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79EBCC332F1DD2EF007AAF44 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 795DE8D22F1C215A00987D11 /* Project object */;
 }

@@ -5,14 +5,43 @@ struct RevealView: View {
     let clueNumber: Int
     let isLastClue: Bool
     let unlockType: UnlockType
+    let huntId: String
     let onContinue: () -> Void
+    let onBackToIntro: () -> Void
+    let onBackToClue: () -> Void
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                Image(systemName: "star.fill")
-                    .font(.system(size: 50))
-                    .foregroundColor(.yellow)
+        VStack(spacing: 0) {
+            HStack {
+                Button(action: onBackToIntro) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "house")
+                        Text("Start")
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.orange)
+                }
+
+                Spacer()
+
+                Button(action: onBackToClue) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("Back to Clue")
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.blue)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color(.systemBackground))
+
+            ScrollView {
+                VStack(spacing: 24) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 50))
+                        .foregroundColor(.yellow)
 
                 Text("Discovery!")
                     .font(.largeTitle)
@@ -20,32 +49,16 @@ struct RevealView: View {
 
                 if !reveal.photos.isEmpty {
                     TabView {
-                        ForEach(reveal.photos, id: \.self) { photo in
-                            if let uiImage = UIImage(named: photo) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .cornerRadius(12)
-                                    .padding(.horizontal)
-                            } else {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.gray.opacity(0.2))
-                                    VStack {
-                                        Image(systemName: "photo")
-                                            .font(.system(size: 40))
-                                            .foregroundColor(.gray)
-                                        Text(photo)
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    }
-                                }
-                                .aspectRatio(4/3, contentMode: .fit)
-                                .padding(.horizontal)
-                            }
+                        ForEach(Array(reveal.photos.enumerated()), id: \.offset) { index, photo in
+                            HuntImage(
+                                imageName: photo,
+                                huntId: huntId,
+                                index: index,
+                                totalCount: reveal.photos.count
+                            )
                         }
                     }
-                    .tabViewStyle(.page)
+                    .tabViewStyle(.page(indexDisplayMode: .always))
                     .frame(height: 280)
                 }
 
@@ -56,6 +69,10 @@ struct RevealView: View {
                     .padding()
                     .background(Color.yellow.opacity(0.1))
                     .cornerRadius(16)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.yellow.opacity(0.5), lineWidth: 2)
+                    )
 
                 Button(action: onContinue) {
                     HStack {
@@ -73,7 +90,9 @@ struct RevealView: View {
 
                 Spacer(minLength: 50)
             }
-            .padding()
+                .padding()
+            }
         }
+        .withAppBackground()
     }
 }

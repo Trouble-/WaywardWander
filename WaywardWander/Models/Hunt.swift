@@ -1,7 +1,8 @@
 import Foundation
 import CoreLocation
 
-struct Hunt: Codable {
+struct Hunt: Codable, Identifiable {
+    let id: String
     let title: String
     let description: String
     let clues: [Clue]

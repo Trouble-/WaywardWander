@@ -3,19 +3,47 @@ import SwiftUI
 struct PasscodeView: View {
     let expectedPasscode: String
     let onSuccess: () -> Void
+    let onBackToIntro: () -> Void
+    let onBackToReveal: () -> Void
 
     @State private var enteredPasscode: String = ""
     @State private var showError: Bool = false
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        VStack(spacing: 32) {
-            Spacer()
-
-            VStack(spacing: 16) {
-                Image(systemName: "lock.fill")
-                    .font(.system(size: 50))
+        VStack(spacing: 0) {
+            HStack {
+                Button(action: onBackToIntro) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "house")
+                        Text("Start")
+                    }
+                    .font(.subheadline)
                     .foregroundColor(.orange)
+                }
+
+                Spacer()
+
+                Button(action: onBackToReveal) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.blue)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color(.systemBackground))
+
+            VStack(spacing: 32) {
+                Spacer()
+
+                VStack(spacing: 16) {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 50))
+                        .foregroundColor(.orange)
 
                 Text("Enter Passcode")
                     .font(.title)
@@ -57,12 +85,14 @@ struct PasscodeView: View {
                 .padding(.horizontal, 40)
             }
 
-            Spacer()
-            Spacer()
+                Spacer()
+                Spacer()
+            }
+            .onAppear {
+                isFocused = true
+            }
         }
-        .onAppear {
-            isFocused = true
-        }
+        .withAppBackground()
     }
 
     private func checkPasscode() {
@@ -79,7 +109,10 @@ struct PasscodeView: View {
 }
 
 #Preview {
-    PasscodeView(expectedPasscode: "secret") {
-        print("Success!")
-    }
+    PasscodeView(
+        expectedPasscode: "secret",
+        onSuccess: { print("Success!") },
+        onBackToIntro: { print("Back to intro") },
+        onBackToReveal: { print("Back to reveal") }
+    )
 }

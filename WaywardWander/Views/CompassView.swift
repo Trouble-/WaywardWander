@@ -11,13 +11,13 @@ struct CompassView: View {
                     .frame(width: 200, height: 200)
 
                 Circle()
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 2)
+                    .stroke(Color.gray.opacity(0.6), lineWidth: 3)
                     .frame(width: 200, height: 200)
 
                 ForEach(0..<8) { index in
                     Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 1, height: 10)
+                        .fill(Color.gray.opacity(0.6))
+                        .frame(width: 2, height: 12)
                         .offset(y: -90)
                         .rotationEffect(.degrees(Double(index) * 45))
                 }
@@ -25,7 +25,7 @@ struct CompassView: View {
                 Text("N")
                     .font(.caption)
                     .fontWeight(.bold)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.primary)
                     .offset(y: -110)
 
                 ArrowShape()

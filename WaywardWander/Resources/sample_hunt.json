@@ -1,4 +1,5 @@
 {
+    "id": "downtown-discovery-sf",
     "title": "Downtown Discovery",
     "description": "Explore the heart of the city on this exciting scavenger hunt! Follow the clues to uncover hidden gems and local history.",
     "clues": [
@@ -25,7 +26,12 @@
                 }
             ],
             "reveal": {
-                "photos": ["cable_car_turnaround"],
+                "photos": [
+                    "cable_car_turnaround_1",
+                    "cable_car_turnaround_2",
+                    "cable_car_turnaround_3",
+                    "cable_car_turnaround_4"
+                ],
                 "text": "You found the Powell Street Cable Car Turnaround! This iconic spot has been delighting visitors since 1873. Watch as conductors manually rotate the cars on the wooden turntable."
             },
             "unlockNext": "automatic",
@@ -54,7 +60,13 @@
                 }
             ],
             "reveal": {
-                "photos": ["transamerica_pyramid"],
+                "photos": [
+                    "transamerica_pyramid_1",
+                    "transamerica_pyramid_2",
+                    "transamerica_pyramid_3",
+                    "transamerica_pyramid_4",
+                    "transamerica_pyramid_5"
+                ],
                 "text": "The Transamerica Pyramid! At 853 feet, it was the tallest building in San Francisco when completed in 1972. The unique shape was designed to allow more light to reach the streets below."
             },
             "unlockNext": "passcode",
@@ -83,7 +95,12 @@
                 }
             ],
             "reveal": {
-                "photos": ["ghirardelli_square"],
+                "photos": [
+                    "ghirardelli_square_1",
+                    "ghirardelli_square_2",
+                    "ghirardelli_square_3",
+                    "ghirardelli_square_4"
+                ],
                 "text": "Welcome to Ghirardelli Square! This former chocolate factory has been transformed into a bustling marketplace. The Ghirardelli family began making chocolate here in 1893, and you can still enjoy their famous hot fudge sundaes today!"
             },
             "unlockNext": "automatic",

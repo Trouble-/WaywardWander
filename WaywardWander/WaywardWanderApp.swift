@@ -9,7 +9,7 @@ struct WaywardWanderApp: App {
     }
 }
 
-enum GameState {
+enum GameState: String {
     case intro
     case playing
     case reveal
@@ -19,78 +19,154 @@ enum GameState {
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
+    @StateObject private var huntStore = HuntStore()
 
-    @State private var hunt: Hunt?
+    @State private var selectedHunt: Hunt?
     @State private var gameState: GameState = .intro
     @State private var currentClueIndex: Int = 0
+    @State private var hintsRevealed: Int = 0
 
     var currentClue: Clue? {
-        guard let hunt = hunt, currentClueIndex < hunt.clues.count else { return nil }
+        guard let hunt = selectedHunt, currentClueIndex < hunt.clues.count else { return nil }
         return hunt.clues[currentClueIndex]
     }
 
     var isLastClue: Bool {
-        guard let hunt = hunt else { return false }
+        guard let hunt = selectedHunt else { return false }
         return currentClueIndex >= hunt.clues.count - 1
     }
 
     var body: some View {
         Group {
-            if let hunt = hunt {
-                switch gameState {
-                case .intro:
-                    HuntIntroView(hunt: hunt) {
-                        locationManager.requestAuthorization()
-                        gameState = .playing
-                    }
-
-                case .playing:
-                    if let clue = currentClue {
-                        ClueView(
-                            clue: clue,
-                            clueNumber: currentClueIndex + 1,
-                            totalClues: hunt.clues.count,
-                            locationManager: locationManager
-                        ) {
-                            gameState = .reveal
-                        }
-                    }
-
-                case .reveal:
-                    if let clue = currentClue {
-                        RevealView(
-                            reveal: clue.reveal,
-                            clueNumber: currentClueIndex + 1,
-                            isLastClue: isLastClue,
-                            unlockType: clue.unlockNext
-                        ) {
-                            handleContinue()
-                        }
-                    }
-
-                case .passcode:
-                    if let clue = currentClue, let passcode = clue.passcode {
-                        PasscodeView(expectedPasscode: passcode) {
-                            advanceToNextClue()
-                        }
-                    }
-
-                case .victory:
-                    VictoryView(hunt: hunt) {
-                        restartHunt()
-                    }
-                }
+            if let hunt = selectedHunt {
+                huntView(hunt: hunt)
             } else {
-                LoadingView()
+                HomeView(huntStore: huntStore) { hunt in
+                    selectHunt(hunt)
+                }
             }
         }
-        .onAppear {
-            loadHunt()
+        .onChange(of: currentClueIndex) { _, _ in
+            saveProgress()
+        }
+        .onChange(of: gameState) { _, _ in
+            saveProgress()
+        }
+        .onChange(of: hintsRevealed) { _, _ in
+            saveProgress()
         }
     }
 
-    private func loadHunt() {
-        hunt = Hunt.load(from: "sample_hunt")
+    @ViewBuilder
+    private func huntView(hunt: Hunt) -> some View {
+        switch gameState {
+        case .intro:
+            HuntIntroView(hunt: hunt) {
+                locationManager.requestAuthorization()
+                gameState = .playing
+            }
+
+        case .playing:
+            if let clue = currentClue {
+                ClueView(
+                    clue: clue,
+                    clueNumber: currentClueIndex + 1,
+                    totalClues: hunt.clues.count,
+                    locationManager: locationManager,
+                    hintsRevealed: $hintsRevealed,
+                    onArrival: {
+                        gameState = .reveal
+                    },
+                    onBackToIntro: {
+                        goToHome()
+                    },
+                    onPreviousClue: currentClueIndex > 0 ? {
+                        goToPreviousClue()
+                    } : nil
+                )
+            }
+
+        case .reveal:
+            if let clue = currentClue {
+                RevealView(
+                    reveal: clue.reveal,
+                    clueNumber: currentClueIndex + 1,
+                    isLastClue: isLastClue,
+                    unlockType: clue.unlockNext,
+                    huntId: hunt.id,
+                    onContinue: {
+                        handleContinue()
+                    },
+                    onBackToIntro: {
+                        goToHome()
+                    },
+                    onBackToClue: {
+                        gameState = .playing
+                    }
+                )
+            }
+
+        case .passcode:
+            if let clue = currentClue, let passcode = clue.passcode {
+                PasscodeView(
+                    expectedPasscode: passcode,
+                    onSuccess: {
+                        advanceToNextClue()
+                    },
+                    onBackToIntro: {
+                        goToHome()
+                    },
+                    onBackToReveal: {
+                        gameState = .reveal
+                    }
+                )
+            }
+
+        case .victory:
+            VictoryView(
+                hunt: hunt,
+                onRestart: {
+                    restartHunt()
+                },
+                onBackToHome: {
+                    goToHome()
+                },
+                onBackToLastClue: {
+                    goToLastClue()
+                }
+            )
+        }
+    }
+
+    private func selectHunt(_ hunt: Hunt) {
+        selectedHunt = hunt
+
+        // Check for saved progress on this hunt
+        if let progress = HuntProgressManager.shared.loadProgress() {
+            if progress.huntId == hunt.id {
+                currentClueIndex = progress.currentClueIndex
+                hintsRevealed = progress.hintsRevealed
+                if let state = GameState(rawValue: progress.gameState) {
+                    gameState = state
+                }
+                return
+            }
+        }
+
+        // Fresh start
+        currentClueIndex = 0
+        hintsRevealed = 0
+        gameState = .intro
+    }
+
+    private func saveProgress() {
+        guard let hunt = selectedHunt else { return }
+        HuntProgressManager.shared.saveProgress(
+            huntId: hunt.id,
+            clueIndex: currentClueIndex,
+            gameState: gameState,
+            hintsRevealed: hintsRevealed
+        )
     }
 
     private func handleContinue() {
@@ -107,12 +183,38 @@ struct ContentView: View {
 
     private func advanceToNextClue() {
         currentClueIndex += 1
+        hintsRevealed = 0
         gameState = .playing
     }
 
     private func restartHunt() {
         currentClueIndex = 0
+        hintsRevealed = 0
         gameState = .intro
+        HuntProgressManager.shared.clearProgress()
+    }
+
+    private func goToHome() {
+        selectedHunt = nil
+        currentClueIndex = 0
+        hintsRevealed = 0
+        gameState = .intro
+    }
+
+    private func goToPreviousClue() {
+        guard currentClueIndex > 0 else { return }
+        currentClueIndex -= 1
+        if let hunt = selectedHunt {
+            hintsRevealed = hunt.clues[currentClueIndex].hints.count
+        }
+        gameState = .playing
+    }
+
+    private func goToLastClue() {
+        if let hunt = selectedHunt {
+            hintsRevealed = hunt.clues[currentClueIndex].hints.count
+        }
+        gameState = .playing
     }
 }
 
@@ -122,7 +224,7 @@ struct LoadingView: View {
             ProgressView()
                 .scaleEffect(1.5)
 
-            Text("Loading hunt...")
+            Text("Loading...")
                 .foregroundColor(.secondary)
         }
     }
