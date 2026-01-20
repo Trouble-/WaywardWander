@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import ZIPFoundation
+import UIKit
 
 class HuntStore: ObservableObject {
     @Published var hunts: [Hunt] = []
@@ -213,6 +214,87 @@ class HuntStore: ObservableObject {
         }
 
         loadAllHunts()
+    }
+
+    // MARK: - Save Hunt
+
+    func saveHunt(_ hunt: Hunt, images: [String: UIImage]) -> Bool {
+        do {
+            // Create hunt directory
+            let huntDir = huntsDirectory.appendingPathComponent(hunt.id, isDirectory: true)
+            if fileManager.fileExists(atPath: huntDir.path) {
+                // Keep existing images directory if updating
+            } else {
+                try fileManager.createDirectory(at: huntDir, withIntermediateDirectories: true)
+            }
+
+            // Save hunt.json
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let huntData = try encoder.encode(hunt)
+            let huntJsonURL = huntDir.appendingPathComponent("hunt.json")
+            try huntData.write(to: huntJsonURL)
+
+            // Save images
+            if !images.isEmpty {
+                let imagesDir = huntDir.appendingPathComponent("images", isDirectory: true)
+                if !fileManager.fileExists(atPath: imagesDir.path) {
+                    try fileManager.createDirectory(at: imagesDir, withIntermediateDirectories: true)
+                }
+
+                for (filename, image) in images {
+                    if let data = image.jpegData(compressionQuality: 0.8) {
+                        let imageURL = imagesDir.appendingPathComponent(filename)
+                        try data.write(to: imageURL)
+                    }
+                }
+            }
+
+            loadAllHunts()
+            return true
+        } catch {
+            print("Error saving hunt: \(error)")
+            return false
+        }
+    }
+
+    // MARK: - Check if User Created
+
+    func isUserCreated(_ huntId: String) -> Bool {
+        let huntDir = huntsDirectory.appendingPathComponent(huntId, isDirectory: true)
+        return fileManager.fileExists(atPath: huntDir.path)
+    }
+
+    // MARK: - Export Bundle
+
+    func exportBundle(huntId: String) -> URL? {
+        let huntDir = huntsDirectory.appendingPathComponent(huntId, isDirectory: true)
+        let huntJsonURL = huntDir.appendingPathComponent("hunt.json")
+
+        guard fileManager.fileExists(atPath: huntJsonURL.path) else {
+            print("Hunt not found for export: \(huntId)")
+            return nil
+        }
+
+        do {
+            // Create temp file for the bundle
+            let tempDir = fileManager.temporaryDirectory
+            let bundleName = "\(huntId).wwh"
+            let bundleURL = tempDir.appendingPathComponent(bundleName)
+
+            // Remove existing bundle if present
+            if fileManager.fileExists(atPath: bundleURL.path) {
+                try fileManager.removeItem(at: bundleURL)
+            }
+
+            // Create zip archive
+            try fileManager.zipItem(at: huntDir, to: bundleURL)
+
+            return bundleURL
+        } catch {
+            print("Error exporting bundle: \(error)")
+            return nil
+        }
     }
 
     // MARK: - Image Loading

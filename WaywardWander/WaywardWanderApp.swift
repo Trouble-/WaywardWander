@@ -28,6 +28,11 @@ struct ContentView: View {
     @State private var arrivedClues: Set<Int> = []
     @State private var unlockedClues: Set<Int> = []
 
+    // Editor state
+    @State private var showingEditor = false
+    @State private var editableHunt: EditableHunt?
+    @State private var isEditingExisting = false
+
     var currentClue: Clue? {
         guard let hunt = selectedHunt, currentClueIndex < hunt.clues.count else { return nil }
         return hunt.clues[currentClueIndex]
@@ -43,9 +48,39 @@ struct ContentView: View {
             if let hunt = selectedHunt {
                 huntView(hunt: hunt)
             } else {
-                HomeView(huntStore: huntStore) { hunt in
-                    selectHunt(hunt)
-                }
+                HomeView(
+                    huntStore: huntStore,
+                    onSelectHunt: { hunt in
+                        selectHunt(hunt)
+                    },
+                    onCreateQuest: {
+                        editableHunt = EditableHunt.createNew()
+                        isEditingExisting = false
+                        showingEditor = true
+                    },
+                    onEditQuest: { hunt in
+                        editableHunt = EditableHunt.from(hunt)
+                        isEditingExisting = true
+                        showingEditor = true
+                    }
+                )
+            }
+        }
+        .sheet(isPresented: $showingEditor) {
+            if let hunt = editableHunt {
+                QuestEditorView(
+                    hunt: hunt,
+                    isNewQuest: !isEditingExisting,
+                    huntStore: huntStore,
+                    onSave: {
+                        showingEditor = false
+                        editableHunt = nil
+                    },
+                    onCancel: {
+                        showingEditor = false
+                        editableHunt = nil
+                    }
+                )
             }
         }
         .onChange(of: currentClueIndex) { _, _ in

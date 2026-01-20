@@ -4,9 +4,15 @@ import UniformTypeIdentifiers
 struct HomeView: View {
     @ObservedObject var huntStore: HuntStore
     let onSelectHunt: (Hunt) -> Void
+    let onCreateQuest: () -> Void
+    let onEditQuest: (Hunt) -> Void
 
     @State private var showingFilePicker = false
     @State private var showingImportError = false
+    @State private var huntToDelete: Hunt?
+    @State private var showingDeleteConfirmation = false
+    @State private var shareURL: URL?
+    @State private var showingShareSheet = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -27,8 +33,8 @@ struct HomeView: View {
                     huntListView
                 }
 
-                // Import button
-                importButtonView
+                // Action buttons
+                actionButtonsView
                     .padding(.bottom, 40)
         }
         .fileImporter(
@@ -42,6 +48,24 @@ struct HomeView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("The file couldn't be imported. Make sure it's a valid Wander file.")
+        }
+        .alert("Delete Quest?", isPresented: $showingDeleteConfirmation) {
+            Button("Delete", role: .destructive) {
+                if let hunt = huntToDelete {
+                    huntStore.deleteHunt(hunt)
+                }
+                huntToDelete = nil
+            }
+            Button("Cancel", role: .cancel) {
+                huntToDelete = nil
+            }
+        } message: {
+            Text("Are you sure you want to delete \"\(huntToDelete?.title ?? "this quest")\"? This cannot be undone.")
+        }
+        .sheet(isPresented: $showingShareSheet) {
+            if let url = shareURL {
+                ShareSheet(activityItems: [url])
+            }
         }
         .withAppBackground()
     }
@@ -68,13 +92,35 @@ struct HomeView: View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(huntStore.hunts) { hunt in
-                    HuntCardView(hunt: hunt) {
-                        onSelectHunt(hunt)
-                    }
+                    let isUserCreated = huntStore.isUserCreated(hunt.id)
+                    HuntCardView(
+                        hunt: hunt,
+                        isUserCreated: isUserCreated,
+                        onSelect: {
+                            onSelectHunt(hunt)
+                        },
+                        onEdit: isUserCreated ? {
+                            onEditQuest(hunt)
+                        } : nil,
+                        onDelete: isUserCreated ? {
+                            huntToDelete = hunt
+                            showingDeleteConfirmation = true
+                        } : nil,
+                        onShare: isUserCreated ? {
+                            shareQuest(hunt)
+                        } : nil
+                    )
                 }
             }
             .padding(.horizontal)
             .padding(.bottom, 16)
+        }
+    }
+
+    private func shareQuest(_ hunt: Hunt) {
+        if let url = huntStore.exportBundle(huntId: hunt.id) {
+            shareURL = url
+            showingShareSheet = true
         }
     }
 
@@ -98,20 +144,41 @@ struct HomeView: View {
         }
     }
 
-    private var importButtonView: some View {
-        Button(action: { showingFilePicker = true }) {
-            HStack {
-                Image(systemName: "square.and.arrow.down")
-                Text("Import Quest")
+    private var actionButtonsView: some View {
+        HStack(spacing: 12) {
+            // Create Quest button
+            Button(action: onCreateQuest) {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Create Quest")
+                }
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(AppTheme.accent)
+                .cornerRadius(12)
             }
-            .font(.headline)
-            .foregroundColor(.white)
-            .padding()
-            .frame(maxWidth: 400)
-            .background(AppTheme.accent)
-            .cornerRadius(12)
+
+            // Import Quest button
+            Button(action: { showingFilePicker = true }) {
+                HStack {
+                    Image(systemName: "square.and.arrow.down")
+                    Text("Import")
+                }
+                .font(.headline)
+                .foregroundColor(AppTheme.accent)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.clear)
+                .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(AppTheme.accent, lineWidth: 2)
+                )
+            }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: 500)
         .padding(.horizontal, 20)
     }
 
@@ -127,4 +194,16 @@ struct HomeView: View {
             showingImportError = true
         }
     }
+}
+
+// MARK: - Share Sheet
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
