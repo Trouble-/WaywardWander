@@ -70,7 +70,7 @@ struct HuntIntroView: View {
 
             Button(action: onStart) {
                 HStack {
-                    Text("Begin Hunt")
+                    Text("Begin Journey")
                         .fontWeight(.semibold)
                     Image(systemName: "arrow.right")
                 }

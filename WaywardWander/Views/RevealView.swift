@@ -76,7 +76,7 @@ struct RevealView: View {
 
                 Button(action: onContinue) {
                     HStack {
-                        Text(isLastClue ? "Complete Hunt" : "Next Clue")
+                        Text(isLastClue ? "Complete Quest" : "Next Clue")
                             .fontWeight(.semibold)
                         Image(systemName: isLastClue ? "flag.checkered" : "arrow.right")
                     }

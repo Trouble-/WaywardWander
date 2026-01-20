@@ -78,7 +78,7 @@ struct VictoryView: View {
                 HStack {
                     Image(systemName: "star.fill")
                         .foregroundColor(AppTheme.accent)
-                    Text("Hunt complete!")
+                    Text("Journey complete!")
                 }
             }
             .font(.subheadline)

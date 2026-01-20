@@ -86,11 +86,11 @@ struct HomeView: View {
                 .font(.system(size: 60))
                 .foregroundColor(AppTheme.accent.opacity(0.5))
 
-            Text("No Hunts Available")
+            Text("No Journeys Available")
                 .font(.title2)
                 .fontWeight(.semibold)
 
-            Text("Import a hunt file to get started")
+            Text("Import a journey file to get started")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
