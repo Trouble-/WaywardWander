@@ -26,6 +26,7 @@ struct ContentView: View {
     @State private var currentClueIndex: Int = 0
     @State private var hintsRevealed: Int = 0
     @State private var arrivedClues: Set<Int> = []
+    @State private var unlockedClues: Set<Int> = []
 
     var currentClue: Clue? {
         guard let hunt = selectedHunt, currentClueIndex < hunt.clues.count else { return nil }
@@ -57,6 +58,9 @@ struct ContentView: View {
             saveProgress()
         }
         .onChange(of: arrivedClues) { _, _ in
+            saveProgress()
+        }
+        .onChange(of: unlockedClues) { _, _ in
             saveProgress()
         }
     }
@@ -125,6 +129,7 @@ struct ContentView: View {
                 PasscodeView(
                     expectedPasscode: passcode,
                     onSuccess: {
+                        unlockedClues.insert(currentClueIndex)
                         advanceToNextClue()
                     },
                     onBackToIntro: {
@@ -161,6 +166,7 @@ struct ContentView: View {
                 currentClueIndex = progress.currentClueIndex
                 hintsRevealed = progress.hintsRevealed
                 arrivedClues = Set(progress.arrivedClues)
+                unlockedClues = Set(progress.unlockedClues)
                 if let state = GameState(rawValue: progress.gameState) {
                     gameState = state
                 }
@@ -172,6 +178,7 @@ struct ContentView: View {
         currentClueIndex = 0
         hintsRevealed = 0
         arrivedClues = []
+        unlockedClues = []
         gameState = .intro
     }
 
@@ -182,7 +189,8 @@ struct ContentView: View {
             clueIndex: currentClueIndex,
             gameState: gameState,
             hintsRevealed: hintsRevealed,
-            arrivedClues: arrivedClues
+            arrivedClues: arrivedClues,
+            unlockedClues: unlockedClues
         )
     }
 
@@ -191,7 +199,7 @@ struct ContentView: View {
 
         if isLastClue {
             gameState = .victory
-        } else if clue.unlockNext == .passcode && clue.passcode != nil {
+        } else if clue.unlockNext == .passcode && clue.passcode != nil && !unlockedClues.contains(currentClueIndex) {
             gameState = .passcode
         } else {
             advanceToNextClue()
@@ -208,6 +216,7 @@ struct ContentView: View {
         currentClueIndex = 0
         hintsRevealed = 0
         arrivedClues = []
+        unlockedClues = []
         gameState = .intro
         HuntProgressManager.shared.clearProgress()
     }
