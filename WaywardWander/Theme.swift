@@ -27,4 +27,7 @@ enum AppTheme {
     static let info = Color(red: 0.07, green: 0.22, blue: 0.75)
     static let infoLight = Color(red: 0.07, green: 0.22, blue: 0.75).opacity(0.1)
     static let infoBorder = Color(red: 0.07, green: 0.22, blue: 0.75).opacity(0.5)
+
+    // Trophy/victory - harvest gold #DA9100
+    static let gold = Color(red: 0.855, green: 0.569, blue: 0.0)
 }

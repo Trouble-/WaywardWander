@@ -41,16 +41,16 @@ struct VictoryView: View {
                 VStack(spacing: 20) {
                     ZStack {
                         Circle()
-                            .fill(Color.yellow.opacity(0.2))
+                            .fill(AppTheme.gold.opacity(0.2))
                             .frame(width: 150, height: 150)
 
                         Circle()
-                            .stroke(Color.yellow.opacity(0.6), lineWidth: 3)
+                            .stroke(AppTheme.gold.opacity(0.6), lineWidth: 3)
                             .frame(width: 150, height: 150)
 
                         Image(systemName: "trophy.fill")
                             .font(.system(size: 70))
-                            .foregroundColor(.yellow)
+                            .foregroundColor(AppTheme.gold)
                     }
 
                 Text("Congratulations!")
