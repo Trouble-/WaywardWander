@@ -27,7 +27,7 @@ struct RevealView: View {
                 Button(action: onBackToClue) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("Back to Clue")
+                        Text("Previous")
                     }
                     .font(.subheadline)
                     .foregroundColor(.blue)

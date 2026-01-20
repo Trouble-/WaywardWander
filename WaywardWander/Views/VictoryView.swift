@@ -25,7 +25,7 @@ struct VictoryView: View {
                 Button(action: onBackToLastClue) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("Last Clue")
+                        Text("Previous")
                     }
                     .font(.subheadline)
                     .foregroundColor(.blue)

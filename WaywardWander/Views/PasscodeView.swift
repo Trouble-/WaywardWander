@@ -27,7 +27,7 @@ struct PasscodeView: View {
                 Button(action: onBackToReveal) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("Back")
+                        Text("Previous")
                     }
                     .font(.subheadline)
                     .foregroundColor(.blue)
