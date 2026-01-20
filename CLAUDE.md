@@ -7,7 +7,7 @@ iOS scavenger hunt app that guides users to GPS locations with progressive hints
 All core features plus enhancements implemented:
 
 ### Core Features
-- Load hunts from bundled JSON or imported files
+- Load journeys from bundled JSON or imported files
 - Progressive hint system (text → compass → distance)
 - Compass arrow pointing to target location
 - GPS arrival detection
@@ -16,11 +16,19 @@ All core features plus enhancements implemented:
 - Victory screen on completion
 
 ### Recent Additions
-- **Home Screen**: Hunt selection with branded "Wayward Wander" header and hunt cards
-- **Hunt Import**: Import .json or .wwh (zip bundle with images) hunt files
-- **Progress Persistence**: Hunt progress saved to UserDefaults
-- **Navigation**: Back buttons on all screens to navigate between clues or return to start
+- **Home Screen**: Journey selection with branded "Wayward Wander" header and quest cards
+- **Journey Import**: Import .json or .wwh (zip bundle with images) journey files
+- **Progress Persistence**: Journey progress saved to UserDefaults
+  - Arrival state persists for completed clues
+  - Passcodes only need to be entered once
+- **Navigation**: "Previous" buttons on all screens to navigate through all pages (Clues and Discovery pages)
 - **Background Image**: Custom background image on all screens via `.withAppBackground()` modifier
+- **Custom Color Scheme** (defined in Theme.swift):
+  - Primary accent: Dark teal
+  - Success/arrival: Mint green (#3DB489)
+  - Info/hints: Cobalt blue (#1338BE)
+  - Trophy: Harvest gold (#DA9100)
+- **App Icon**: Custom app icon (ww_icon.png)
 - **UI Polish**: Thicker borders on UI elements for better visibility
 - **Debug Mode**: "Simulate Arrival" button in DEBUG builds for testing without GPS
 
@@ -28,24 +36,26 @@ All core features plus enhancements implemented:
 ```
 WaywardWander/
 ├── WaywardWanderApp.swift           # App entry + ContentView + navigation state machine
+├── Theme.swift                      # Centralized color definitions (AppTheme)
 ├── Models/Hunt.swift                # Data models (Hunt, Clue, Hint, Reveal)
 ├── Views/
-│   ├── HomeView.swift               # Hunt selection screen
-│   ├── HuntCardView.swift           # Card component for hunt list
-│   ├── HuntIntroView.swift          # Hunt start screen
+│   ├── HomeView.swift               # Journey selection screen
+│   ├── HuntCardView.swift           # Card component for journey list
+│   ├── HuntIntroView.swift          # Journey start screen ("Begin Journey")
 │   ├── ClueView.swift               # Main gameplay with hint buttons
 │   ├── CompassView.swift            # Arrow that points to target
 │   ├── RevealView.swift             # Shows discovery content with photo carousel
 │   ├── PasscodeView.swift           # Unlock next clue
-│   ├── VictoryView.swift            # Hunt complete
+│   ├── VictoryView.swift            # Journey complete
 │   └── BackgroundView.swift         # Reusable background component
 ├── Services/
 │   ├── LocationManager.swift        # CoreLocation wrapper
-│   ├── HuntStore.swift              # Manages bundled + imported hunts
-│   ├── HuntProgressManager.swift    # Persists hunt progress to UserDefaults
+│   ├── HuntStore.swift              # Manages bundled + imported journeys
+│   ├── HuntProgressManager.swift    # Persists journey progress to UserDefaults
 │   └── HuntImageLoader.swift        # Loads images from Documents or Assets
 ├── Resources/sample_hunt.json       # 3 San Francisco test locations
 └── Assets.xcassets/
+    ├── AppIcon.appiconset/          # App icon (ww_icon.png)
     ├── home_background.imageset/    # Custom background image
     └── [location]_[n].imageset/     # Placeholder images for sample hunt
 ```
@@ -56,20 +66,20 @@ WaywardWander/
 ## Sample Hunt
 3 locations in San Francisco: Cable Car Turnaround → Transamerica Pyramid (passcode: "1972") → Ghirardelli Square
 
-## Hunt File Format
+## Journey File Format
 
 ### JSON (.json)
-Standard hunt definition file.
+Standard journey definition file.
 
 ### Bundle (.wwh)
 Zip file containing:
-- `hunt.json` - Hunt definition
+- `hunt.json` - Journey definition
 - `images/` folder - Referenced images
 
 ## Testing
 - Use "Dev: Simulate Arrival" button in DEBUG builds to test without GPS
 - Set simulated location in Xcode for location-based testing
-- Import test hunts via Files app or share sheet
+- Import test journeys via Files app or share sheet
 
 ## GitHub
 https://github.com/Trouble-/WaywardWander
