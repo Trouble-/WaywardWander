@@ -234,14 +234,16 @@ struct ContentView: View {
         if let hunt = selectedHunt {
             hintsRevealed = hunt.clues[currentClueIndex].hints.count
         }
-        gameState = .playing
+        // Go to the reveal page of the previous clue
+        gameState = .reveal
     }
 
     private func goToLastClue() {
         if let hunt = selectedHunt {
             hintsRevealed = hunt.clues[currentClueIndex].hints.count
         }
-        gameState = .playing
+        // Go to the reveal page of the last clue
+        gameState = .reveal
     }
 }
 
