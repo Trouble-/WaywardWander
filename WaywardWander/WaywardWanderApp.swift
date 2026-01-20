@@ -25,6 +25,7 @@ struct ContentView: View {
     @State private var gameState: GameState = .intro
     @State private var currentClueIndex: Int = 0
     @State private var hintsRevealed: Int = 0
+    @State private var arrivedClues: Set<Int> = []
 
     var currentClue: Clue? {
         guard let hunt = selectedHunt, currentClueIndex < hunt.clues.count else { return nil }
@@ -55,6 +56,9 @@ struct ContentView: View {
         .onChange(of: hintsRevealed) { _, _ in
             saveProgress()
         }
+        .onChange(of: arrivedClues) { _, _ in
+            saveProgress()
+        }
     }
 
     @ViewBuilder
@@ -76,8 +80,12 @@ struct ContentView: View {
                     totalClues: hunt.clues.count,
                     locationManager: locationManager,
                     hintsRevealed: $hintsRevealed,
+                    hasArrivedAtClue: arrivedClues.contains(currentClueIndex),
                     onArrival: {
                         gameState = .reveal
+                    },
+                    onMarkArrived: {
+                        arrivedClues.insert(currentClueIndex)
                     },
                     onBackToIntro: {
                         goToHome()
@@ -152,6 +160,7 @@ struct ContentView: View {
             if progress.huntId == hunt.id {
                 currentClueIndex = progress.currentClueIndex
                 hintsRevealed = progress.hintsRevealed
+                arrivedClues = Set(progress.arrivedClues)
                 if let state = GameState(rawValue: progress.gameState) {
                     gameState = state
                 }
@@ -162,6 +171,7 @@ struct ContentView: View {
         // Fresh start
         currentClueIndex = 0
         hintsRevealed = 0
+        arrivedClues = []
         gameState = .intro
     }
 
@@ -171,7 +181,8 @@ struct ContentView: View {
             huntId: hunt.id,
             clueIndex: currentClueIndex,
             gameState: gameState,
-            hintsRevealed: hintsRevealed
+            hintsRevealed: hintsRevealed,
+            arrivedClues: arrivedClues
         )
     }
 
@@ -196,6 +207,7 @@ struct ContentView: View {
     private func restartHunt() {
         currentClueIndex = 0
         hintsRevealed = 0
+        arrivedClues = []
         gameState = .intro
         HuntProgressManager.shared.clearProgress()
     }

@@ -6,7 +6,9 @@ struct ClueView: View {
     let totalClues: Int
     @ObservedObject var locationManager: LocationManager
     @Binding var hintsRevealed: Int
+    let hasArrivedAtClue: Bool
     let onArrival: () -> Void
+    let onMarkArrived: () -> Void
     let onBackToIntro: () -> Void
     let onPreviousClue: (() -> Void)?
 
@@ -124,6 +126,7 @@ struct ClueView: View {
                         withAnimation {
                             hasArrived = true
                         }
+                        onMarkArrived()
                     }) {
                         HStack {
                             Image(systemName: "hammer.fill")
@@ -148,12 +151,16 @@ struct ClueView: View {
             }
             .onAppear {
                 locationManager.targetLocation = clue.clLocation
+                if hasArrivedAtClue {
+                    hasArrived = true
+                }
             }
             .onChange(of: locationManager.distanceToTarget) { _, distance in
-                if let distance = distance, distance <= clue.arrivalRadius {
+                if let distance = distance, distance <= clue.arrivalRadius, !hasArrived {
                     withAnimation {
                         hasArrived = true
                     }
+                    onMarkArrived()
                 }
             }
         }

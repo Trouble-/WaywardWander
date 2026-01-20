@@ -5,6 +5,7 @@ struct HuntProgress: Codable {
     var currentClueIndex: Int
     var gameState: String
     var hintsRevealed: Int
+    var arrivedClues: [Int]
 }
 
 class HuntProgressManager {
@@ -14,12 +15,13 @@ class HuntProgressManager {
 
     private init() {}
 
-    func saveProgress(huntId: String, clueIndex: Int, gameState: GameState, hintsRevealed: Int) {
+    func saveProgress(huntId: String, clueIndex: Int, gameState: GameState, hintsRevealed: Int, arrivedClues: Set<Int>) {
         let progress = HuntProgress(
             huntId: huntId,
             currentClueIndex: clueIndex,
             gameState: gameState.rawValue,
-            hintsRevealed: hintsRevealed
+            hintsRevealed: hintsRevealed,
+            arrivedClues: Array(arrivedClues)
         )
 
         if let encoded = try? JSONEncoder().encode(progress) {
