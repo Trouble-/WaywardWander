@@ -35,10 +35,9 @@ struct VictoryView: View {
             .padding(.vertical, 8)
             .background(Color(.systemBackground))
 
-            VStack(spacing: 32) {
-                Spacer()
-
-                VStack(spacing: 20) {
+            ScrollView {
+                VStack(spacing: 32) {
+                    VStack(spacing: 20) {
                     ZStack {
                         Circle()
                             .fill(AppTheme.gold.opacity(0.2))
@@ -90,8 +89,6 @@ struct VictoryView: View {
                     .stroke(AppTheme.successBorder, lineWidth: 2)
             )
 
-            Spacer()
-
                 VStack(spacing: 12) {
                     Button(action: onBackToHome) {
                         HStack {
@@ -127,8 +124,9 @@ struct VictoryView: View {
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 40)
+                }
+                .padding()
             }
-            .padding()
             .onAppear {
                 showConfetti = true
             }
