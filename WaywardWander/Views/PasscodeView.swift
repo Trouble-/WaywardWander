@@ -16,7 +16,7 @@ struct PasscodeView: View {
                 Button(action: onBackToIntro) {
                     HStack(spacing: 4) {
                         Image(systemName: "house")
-                        Text("Start")
+                        Text("Home")
                     }
                     .font(.subheadline)
                     .foregroundColor(AppTheme.accent)
