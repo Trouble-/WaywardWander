@@ -11,8 +11,7 @@ struct HomeView: View {
     @State private var showingImportError = false
     @State private var huntToDelete: Hunt?
     @State private var showingDeleteConfirmation = false
-    @State private var shareURL: URL?
-    @State private var showingShareSheet = false
+    @State private var shareItem: ShareItem?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -62,10 +61,8 @@ struct HomeView: View {
         } message: {
             Text("Are you sure you want to delete \"\(huntToDelete?.title ?? "this quest")\"? This cannot be undone.")
         }
-        .sheet(isPresented: $showingShareSheet) {
-            if let url = shareURL {
-                ShareSheet(activityItems: [url])
-            }
+        .sheet(item: $shareItem) { item in
+            ShareSheet(activityItems: [item.url])
         }
         .withAppBackground()
     }
@@ -119,8 +116,7 @@ struct HomeView: View {
 
     private func shareQuest(_ hunt: Hunt) {
         if let url = huntStore.exportBundle(huntId: hunt.id) {
-            shareURL = url
-            showingShareSheet = true
+            shareItem = ShareItem(url: url)
         }
     }
 
@@ -194,6 +190,13 @@ struct HomeView: View {
             showingImportError = true
         }
     }
+}
+
+// MARK: - Share Item
+
+struct ShareItem: Identifiable {
+    let id = UUID()
+    let url: URL
 }
 
 // MARK: - Share Sheet
