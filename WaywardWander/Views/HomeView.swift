@@ -150,11 +150,15 @@ struct HomeView: View {
                     Text("Create Quest")
                 }
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(AppTheme.accent)
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(AppTheme.accent)
+                .background(Color.clear)
                 .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(AppTheme.accent, lineWidth: 2)
+                )
             }
 
             // Import Quest button
