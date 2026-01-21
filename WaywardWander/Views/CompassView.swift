@@ -34,6 +34,7 @@ struct CompassView: View {
                     .rotationEffect(.degrees(rotation))
                     .animation(.easeInOut(duration: 0.3), value: rotation)
             }
+            .padding(.top, 16)
 
             Text("Follow the arrow")
                 .font(.subheadline)
