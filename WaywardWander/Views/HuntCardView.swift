@@ -4,25 +4,9 @@ struct HuntCardView: View {
     let hunt: Hunt
     let isUserCreated: Bool
     let onSelect: () -> Void
-    var onEdit: (() -> Void)?
-    var onDelete: (() -> Void)?
-    var onShare: (() -> Void)?
-
-    init(
-        hunt: Hunt,
-        isUserCreated: Bool = false,
-        onSelect: @escaping () -> Void,
-        onEdit: (() -> Void)? = nil,
-        onDelete: (() -> Void)? = nil,
-        onShare: (() -> Void)? = nil
-    ) {
-        self.hunt = hunt
-        self.isUserCreated = isUserCreated
-        self.onSelect = onSelect
-        self.onEdit = onEdit
-        self.onDelete = onDelete
-        self.onShare = onShare
-    }
+    let onEdit: () -> Void
+    let onDelete: () -> Void
+    let onShare: () -> Void
 
     var body: some View {
         Button(action: onSelect) {
@@ -70,26 +54,39 @@ struct HuntCardView: View {
             )
         }
         .buttonStyle(.plain)
-        .contextMenu {
-            if isUserCreated {
-                if let onEdit = onEdit {
-                    Button(action: onEdit) {
-                        Label("Edit", systemImage: "pencil")
-                    }
+        .modifier(UserCreatedContextMenu(
+            isUserCreated: isUserCreated,
+            onEdit: onEdit,
+            onShare: onShare,
+            onDelete: onDelete
+        ))
+    }
+}
+
+struct UserCreatedContextMenu: ViewModifier {
+    let isUserCreated: Bool
+    let onEdit: () -> Void
+    let onShare: () -> Void
+    let onDelete: () -> Void
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if isUserCreated {
+            content.contextMenu {
+                Button(action: onEdit) {
+                    Label("Edit", systemImage: "pencil")
                 }
 
-                if let onShare = onShare {
-                    Button(action: onShare) {
-                        Label("Share", systemImage: "square.and.arrow.up")
-                    }
+                Button(action: onShare) {
+                    Label("Share", systemImage: "square.and.arrow.up")
                 }
 
-                if let onDelete = onDelete {
-                    Button(role: .destructive, action: onDelete) {
-                        Label("Delete", systemImage: "trash")
-                    }
+                Button(role: .destructive, action: onDelete) {
+                    Label("Delete", systemImage: "trash")
                 }
             }
+        } else {
+            content
         }
     }
 }

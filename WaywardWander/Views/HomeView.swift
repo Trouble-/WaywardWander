@@ -89,23 +89,22 @@ struct HomeView: View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(huntStore.hunts) { hunt in
-                    let isUserCreated = huntStore.isUserCreated(hunt.id)
                     HuntCardView(
                         hunt: hunt,
-                        isUserCreated: isUserCreated,
+                        isUserCreated: huntStore.isUserCreated(hunt.id),
                         onSelect: {
                             onSelectHunt(hunt)
                         },
-                        onEdit: isUserCreated ? {
+                        onEdit: {
                             onEditQuest(hunt)
-                        } : nil,
-                        onDelete: isUserCreated ? {
+                        },
+                        onDelete: {
                             huntToDelete = hunt
                             showingDeleteConfirmation = true
-                        } : nil,
-                        onShare: isUserCreated ? {
+                        },
+                        onShare: {
                             shareQuest(hunt)
-                        } : nil
+                        }
                     )
                 }
             }
