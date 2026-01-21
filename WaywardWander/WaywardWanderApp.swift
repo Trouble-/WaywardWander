@@ -17,6 +17,12 @@ enum GameState: String {
     case victory
 }
 
+struct EditorItem: Identifiable {
+    let id = UUID()
+    let hunt: EditableHunt
+    let isNew: Bool
+}
+
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var huntStore = HuntStore()
@@ -29,9 +35,7 @@ struct ContentView: View {
     @State private var unlockedClues: Set<Int> = []
 
     // Editor state
-    @State private var showingEditor = false
-    @State private var editableHunt: EditableHunt?
-    @State private var isEditingExisting = false
+    @State private var editorItem: EditorItem?
 
     var currentClue: Clue? {
         guard let hunt = selectedHunt, currentClueIndex < hunt.clues.count else { return nil }
@@ -54,34 +58,26 @@ struct ContentView: View {
                         selectHunt(hunt)
                     },
                     onCreateQuest: {
-                        editableHunt = EditableHunt.createNew()
-                        isEditingExisting = false
-                        showingEditor = true
+                        editorItem = EditorItem(hunt: EditableHunt.createNew(), isNew: true)
                     },
                     onEditQuest: { hunt in
-                        editableHunt = EditableHunt.from(hunt)
-                        isEditingExisting = true
-                        showingEditor = true
+                        editorItem = EditorItem(hunt: EditableHunt.from(hunt), isNew: false)
                     }
                 )
             }
         }
-        .sheet(isPresented: $showingEditor) {
-            if let hunt = editableHunt {
-                QuestEditorView(
-                    hunt: hunt,
-                    isNewQuest: !isEditingExisting,
-                    huntStore: huntStore,
-                    onSave: {
-                        showingEditor = false
-                        editableHunt = nil
-                    },
-                    onCancel: {
-                        showingEditor = false
-                        editableHunt = nil
-                    }
-                )
-            }
+        .sheet(item: $editorItem) { item in
+            QuestEditorView(
+                hunt: item.hunt,
+                isNewQuest: item.isNew,
+                huntStore: huntStore,
+                onSave: {
+                    editorItem = nil
+                },
+                onCancel: {
+                    editorItem = nil
+                }
+            )
         }
         .onChange(of: currentClueIndex) { _, _ in
             saveProgress()
