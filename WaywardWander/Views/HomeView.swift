@@ -89,9 +89,10 @@ struct HomeView: View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(huntStore.hunts) { hunt in
+                    let huntId = hunt.id
                     HuntCardView(
                         hunt: hunt,
-                        isUserCreated: huntStore.isUserCreated(hunt.id),
+                        isUserCreated: huntStore.isUserCreated(huntId),
                         onSelect: {
                             onSelectHunt(hunt)
                         },
@@ -106,6 +107,7 @@ struct HomeView: View {
                             shareQuest(hunt)
                         }
                     )
+                    .id(huntId)
                 }
             }
             .padding(.horizontal)
