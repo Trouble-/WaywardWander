@@ -165,15 +165,23 @@ struct ClueEditorView: View {
                     .foregroundColor(.secondary)
                     .padding(.vertical, 8)
             } else {
-                ForEach(Array(clue.hints.enumerated()), id: \.element.id) { index, hint in
+                ForEach(clue.hints.indices, id: \.self) { index in
+                    let hintId = clue.hints[index].id
                     HintEditorRow(
                         hint: Binding(
-                            get: { clue.hints[index] },
-                            set: { clue.hints[index] = $0 }
+                            get: { clue.hints.first { $0.id == hintId } ?? EditableHint(type: .text, content: "") },
+                            set: { newValue in
+                                if let idx = clue.hints.firstIndex(where: { $0.id == hintId }) {
+                                    clue.hints[idx] = newValue
+                                }
+                            }
                         ),
                         index: index,
-                        onDelete: { clue.hints.remove(at: index) }
+                        onDelete: {
+                            clue.hints.removeAll { $0.id == hintId }
+                        }
                     )
+                    .id(hintId)
                 }
             }
         }
