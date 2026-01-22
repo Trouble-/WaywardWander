@@ -7,7 +7,7 @@ iOS scavenger hunt app that guides users to GPS locations with progressive hints
 All core features plus quest creation/editing:
 
 ### Core Features
-- Load journeys from bundled JSON or imported files
+- Load journeys from imported files or user-created quests
 - Progressive hint system (text → compass → distance)
 - Compass arrow pointing to target location
 - GPS arrival detection
@@ -32,7 +32,7 @@ All core features plus quest creation/editing:
 - **Progress Persistence**: Journey progress saved to UserDefaults
   - Arrival state persists for completed clues
   - Passcodes only need to be entered once
-- **Navigation**: "Previous" buttons on all screens to navigate through all pages (Clues and Discovery pages)
+- **Navigation**: "Home" and "Previous" buttons on all screens for easy navigation
 - **Background Image**: Custom background image on all screens via `.withAppBackground()` modifier
 - **Custom Color Scheme** (defined in Theme.swift):
   - Primary accent: Dark teal
@@ -71,11 +71,9 @@ WaywardWander/
 │   ├── HuntStore.swift              # Manages quests: load, save, import, export
 │   ├── HuntProgressManager.swift    # Persists journey progress to UserDefaults
 │   └── HuntImageLoader.swift        # Loads images from Documents or Assets
-├── Resources/sample_hunt.json       # 3 San Francisco test locations
 └── Assets.xcassets/
     ├── AppIcon.appiconset/          # App icon (ww_icon.png)
-    ├── home_background.imageset/    # Custom background image
-    └── [location]_[n].imageset/     # Placeholder images for sample hunt
+    └── home_background.imageset/    # Custom background image
 ```
 
 ## Dependencies
@@ -90,9 +88,6 @@ Documents/Hunts/
         ├── photo_abc123.jpg
         └── ...
 ```
-
-## Sample Hunt
-3 locations in San Francisco: Cable Car Turnaround → Transamerica Pyramid (passcode: "1972") → Ghirardelli Square
 
 ## Journey File Format
 
