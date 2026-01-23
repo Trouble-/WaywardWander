@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HuntCardView: View {
     let hunt: Hunt
-    let isUserCreated: Bool
+    let isEditable: Bool
     let onSelect: () -> Void
     let onEdit: () -> Void
     let onDelete: () -> Void
@@ -20,7 +20,7 @@ struct HuntCardView: View {
                                 .foregroundColor(.primary)
                                 .multilineTextAlignment(.leading)
 
-                            if isUserCreated {
+                            if isEditable {
                                 Image(systemName: "pencil.circle.fill")
                                     .font(.caption)
                                     .foregroundColor(AppTheme.accent)
@@ -54,8 +54,8 @@ struct HuntCardView: View {
             )
         }
         .buttonStyle(.plain)
-        .modifier(UserCreatedContextMenu(
-            isUserCreated: isUserCreated,
+        .modifier(EditableContextMenu(
+            isEditable: isEditable,
             onEdit: onEdit,
             onShare: onShare,
             onDelete: onDelete
@@ -63,15 +63,15 @@ struct HuntCardView: View {
     }
 }
 
-struct UserCreatedContextMenu: ViewModifier {
-    let isUserCreated: Bool
+struct EditableContextMenu: ViewModifier {
+    let isEditable: Bool
     let onEdit: () -> Void
     let onShare: () -> Void
     let onDelete: () -> Void
 
     @ViewBuilder
     func body(content: Content) -> some View {
-        if isUserCreated {
+        if isEditable {
             content.contextMenu {
                 Button(action: onEdit) {
                     Label("Edit", systemImage: "pencil")

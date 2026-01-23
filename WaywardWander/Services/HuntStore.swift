@@ -258,11 +258,36 @@ class HuntStore: ObservableObject {
         }
     }
 
-    // MARK: - Check if User Created
+    // MARK: - Check if Editable
 
-    func isUserCreated(_ huntId: String) -> Bool {
+    func isEditable(_ huntId: String) -> Bool {
+        // Find the hunt and check its isEditable property
+        if let hunt = hunts.first(where: { $0.id == huntId }) {
+            return hunt.isEditable
+        }
+        return false
+    }
+
+    func markHuntEditable(_ huntId: String) {
         let huntDir = huntsDirectory.appendingPathComponent(huntId, isDirectory: true)
-        return fileManager.fileExists(atPath: huntDir.path)
+        let huntJsonURL = huntDir.appendingPathComponent("hunt.json")
+
+        guard fileManager.fileExists(atPath: huntJsonURL.path) else { return }
+
+        do {
+            let data = try Data(contentsOf: huntJsonURL)
+            var hunt = try JSONDecoder().decode(Hunt.self, from: data)
+            hunt.isEditable = true
+
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let updatedData = try encoder.encode(hunt)
+            try updatedData.write(to: huntJsonURL)
+
+            loadAllHunts()
+        } catch {
+            print("Error marking hunt editable: \(error)")
+        }
     }
 
     // MARK: - Export Bundle
@@ -277,18 +302,40 @@ class HuntStore: ObservableObject {
         }
 
         do {
+            // Create temp directory to prepare export with modified hunt.json
+            let exportTempDir = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            try fileManager.createDirectory(at: exportTempDir, withIntermediateDirectories: true)
+
+            defer {
+                try? fileManager.removeItem(at: exportTempDir)
+            }
+
+            // Copy hunt directory to temp
+            let exportHuntDir = exportTempDir.appendingPathComponent(huntId)
+            try fileManager.copyItem(at: huntDir, to: exportHuntDir)
+
+            // Modify hunt.json to set isEditable = false
+            let exportHuntJsonURL = exportHuntDir.appendingPathComponent("hunt.json")
+            let data = try Data(contentsOf: exportHuntJsonURL)
+            var hunt = try JSONDecoder().decode(Hunt.self, from: data)
+            hunt.isEditable = false
+
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let modifiedData = try encoder.encode(hunt)
+            try modifiedData.write(to: exportHuntJsonURL)
+
             // Create temp file for the bundle
-            let tempDir = fileManager.temporaryDirectory
             let bundleName = "\(huntId).wwh"
-            let bundleURL = tempDir.appendingPathComponent(bundleName)
+            let bundleURL = fileManager.temporaryDirectory.appendingPathComponent(bundleName)
 
             // Remove existing bundle if present
             if fileManager.fileExists(atPath: bundleURL.path) {
                 try fileManager.removeItem(at: bundleURL)
             }
 
-            // Create zip archive
-            try fileManager.zipItem(at: huntDir, to: bundleURL)
+            // Create zip archive from modified export directory
+            try fileManager.zipItem(at: exportHuntDir, to: bundleURL)
 
             return bundleURL
         } catch {

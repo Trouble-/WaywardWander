@@ -6,6 +6,24 @@ struct Hunt: Codable, Identifiable {
     let title: String
     let description: String
     let clues: [Clue]
+    var isEditable: Bool
+
+    init(id: String, title: String, description: String, clues: [Clue], isEditable: Bool = true) {
+        self.id = id
+        self.title = title
+        self.description = description
+        self.clues = clues
+        self.isEditable = isEditable
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        description = try container.decode(String.self, forKey: .description)
+        clues = try container.decode([Clue].self, forKey: .clues)
+        isEditable = try container.decodeIfPresent(Bool.self, forKey: .isEditable) ?? true
+    }
 }
 
 struct Clue: Codable, Identifiable {

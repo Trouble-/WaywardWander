@@ -22,12 +22,6 @@ struct CompassView: View {
                         .rotationEffect(.degrees(Double(index) * 45))
                 }
 
-                Text("N")
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                    .offset(y: -110)
-
                 ArrowShape()
                     .fill(AppTheme.compass)
                     .frame(width: 40, height: 120)
@@ -35,10 +29,6 @@ struct CompassView: View {
                     .animation(.easeInOut(duration: 0.3), value: rotation)
             }
             .padding(.top, 16)
-
-            Text("Follow the arrow")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
         }
     }
 }

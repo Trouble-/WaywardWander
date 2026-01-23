@@ -189,7 +189,7 @@ struct ClueView: View {
 
             case .compass:
                 VStack(spacing: 8) {
-                    Text("Compass")
+                    Text("Follow the arrow")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     CompassView(rotation: locationManager.arrowRotation())

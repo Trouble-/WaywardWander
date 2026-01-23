@@ -230,6 +230,10 @@ struct ContentView: View {
 
         if isLastClue {
             gameState = .victory
+            // Mark hunt as editable after completion
+            if let hunt = selectedHunt {
+                huntStore.markHuntEditable(hunt.id)
+            }
         } else if clue.unlockNext == .passcode && clue.passcode != nil && !unlockedClues.contains(currentClueIndex) {
             gameState = .passcode
         } else {

@@ -92,7 +92,7 @@ struct HomeView: View {
                     let huntId = hunt.id
                     HuntCardView(
                         hunt: hunt,
-                        isUserCreated: huntStore.isUserCreated(huntId),
+                        isEditable: huntStore.isEditable(huntId),
                         onSelect: {
                             onSelectHunt(hunt)
                         },
