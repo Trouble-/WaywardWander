@@ -163,8 +163,24 @@ class HuntStore: ObservableObject {
             // Unzip the bundle using ZIPFoundation
             try fileManager.unzipItem(at: url, to: tempDir)
 
-            // Find and read hunt.json
-            let huntJsonURL = tempDir.appendingPathComponent("hunt.json")
+            // Find hunt.json - check root level first, then look in subdirectories
+            var huntJsonURL = tempDir.appendingPathComponent("hunt.json")
+            var sourceBaseDir = tempDir
+
+            if !fileManager.fileExists(atPath: huntJsonURL.path) {
+                // Look for hunt.json inside a subdirectory (handles bundles with parent directory)
+                if let contents = try? fileManager.contentsOfDirectory(at: tempDir, includingPropertiesForKeys: nil) {
+                    for item in contents where item.hasDirectoryPath {
+                        let nestedHuntJson = item.appendingPathComponent("hunt.json")
+                        if fileManager.fileExists(atPath: nestedHuntJson.path) {
+                            huntJsonURL = nestedHuntJson
+                            sourceBaseDir = item
+                            break
+                        }
+                    }
+                }
+            }
+
             guard fileManager.fileExists(atPath: huntJsonURL.path) else {
                 print("No hunt.json found in bundle")
                 return false
@@ -185,7 +201,7 @@ class HuntStore: ObservableObject {
             try data.write(to: destHuntJson)
 
             // Copy images folder if it exists
-            let sourceImagesDir = tempDir.appendingPathComponent("images")
+            let sourceImagesDir = sourceBaseDir.appendingPathComponent("images")
             let destImagesDir = huntDir.appendingPathComponent("images")
 
             if fileManager.fileExists(atPath: sourceImagesDir.path) {
@@ -335,7 +351,8 @@ class HuntStore: ObservableObject {
             }
 
             // Create zip archive from modified export directory
-            try fileManager.zipItem(at: exportHuntDir, to: bundleURL)
+            // Use shouldKeepParent: false so hunt.json is at root level, not inside a subdirectory
+            try fileManager.zipItem(at: exportHuntDir, to: bundleURL, shouldKeepParent: false)
 
             return bundleURL
         } catch {
