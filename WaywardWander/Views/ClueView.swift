@@ -13,6 +13,10 @@ struct ClueView: View {
     let onPreviousClue: (() -> Void)?
 
     @State private var hasArrived: Bool = false
+    @State private var showingSkipConfirmation: Bool = false
+    @State private var showingSkipPassword: Bool = false
+    @State private var skipPasswordEntry: String = ""
+    @State private var showingWrongPassword: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -145,6 +149,16 @@ struct ClueView: View {
                 }
                 #endif
 
+                // Stuck? help button (only if enabled and not yet arrived)
+                if !hasArrived && clue.skipOption != .disabled {
+                    Button(action: handleStuckButton) {
+                        Text("Stuck?")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.top, 20)
+                }
+
                 Spacer(minLength: 50)
             }
                 .padding()
@@ -160,6 +174,30 @@ struct ClueView: View {
             }
             .onChange(of: locationManager.distanceToTarget) { _, _ in
                 checkArrival()
+            }
+            .alert("Skip this clue?", isPresented: $showingSkipConfirmation) {
+                Button("Skip", role: .destructive) {
+                    performSkip()
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("Are you sure you want to skip ahead? This will mark this clue as complete.")
+            }
+            .alert("Enter Password", isPresented: $showingSkipPassword) {
+                SecureField("Password", text: $skipPasswordEntry)
+                Button("Submit") {
+                    checkSkipPassword()
+                }
+                Button("Cancel", role: .cancel) {
+                    skipPasswordEntry = ""
+                }
+            } message: {
+                Text("Enter the password to skip this clue.")
+            }
+            .alert("Wrong Password", isPresented: $showingWrongPassword) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("The password you entered is incorrect.")
             }
         }
         .withAppBackground()
@@ -233,6 +271,36 @@ struct ClueView: View {
                 hasArrived = true
             }
             onMarkArrived()
+        }
+    }
+
+    private func handleStuckButton() {
+        switch clue.skipOption {
+        case .disabled:
+            break // Should not happen since button is hidden
+        case .allowed:
+            showingSkipConfirmation = true
+        case .password:
+            showingSkipPassword = true
+        }
+    }
+
+    private func performSkip() {
+        withAnimation {
+            hasArrived = true
+        }
+        onMarkArrived()
+    }
+
+    private func checkSkipPassword() {
+        if case .password(let correctPassword) = clue.skipOption {
+            if skipPasswordEntry.lowercased() == correctPassword.lowercased() {
+                skipPasswordEntry = ""
+                performSkip()
+            } else {
+                skipPasswordEntry = ""
+                showingWrongPassword = true
+            }
         }
     }
 

@@ -29,6 +29,13 @@ struct EditableHint: Identifiable {
 
 // MARK: - Editable Clue
 
+// Editor-friendly enum for skip option picker
+enum EditableSkipOption: String, CaseIterable {
+    case disabled = "None"
+    case allowed = "Allow Skip"
+    case password = "Password Required"
+}
+
 class EditableClue: ObservableObject, Identifiable {
     let id = UUID()
     @Published var clueId: Int
@@ -42,6 +49,8 @@ class EditableClue: ObservableObject, Identifiable {
     @Published var existingPhotoNames: [String]  // For photos already saved to disk
     @Published var unlockType: UnlockType
     @Published var passcode: String
+    @Published var skipOption: EditableSkipOption
+    @Published var skipPassword: String
 
     init(
         clueId: Int = 0,
@@ -54,7 +63,9 @@ class EditableClue: ObservableObject, Identifiable {
         revealPhotos: [PhotoItem] = [],
         existingPhotoNames: [String] = [],
         unlockType: UnlockType = .automatic,
-        passcode: String = ""
+        passcode: String = "",
+        skipOption: EditableSkipOption = .disabled,
+        skipPassword: String = ""
     ) {
         self.clueId = clueId
         self.latitude = latitude
@@ -67,6 +78,8 @@ class EditableClue: ObservableObject, Identifiable {
         self.existingPhotoNames = existingPhotoNames
         self.unlockType = unlockType
         self.passcode = passcode
+        self.skipOption = skipOption
+        self.skipPassword = skipPassword
     }
 
     var isLocationValid: Bool {
@@ -87,6 +100,17 @@ class EditableClue: ObservableObject, Identifiable {
         // Combine existing photos with new photo filenames
         let allPhotoNames = existingPhotoNames + photoFilenames
 
+        // Convert editable skip option to model skip option
+        let modelSkipOption: SkipOption
+        switch skipOption {
+        case .disabled:
+            modelSkipOption = .disabled
+        case .allowed:
+            modelSkipOption = .allowed
+        case .password:
+            modelSkipOption = .password(skipPassword)
+        }
+
         return Clue(
             id: clueId,
             location: Coordinate(lat: lat, lng: lng),
@@ -95,12 +119,28 @@ class EditableClue: ObservableObject, Identifiable {
             hints: hints.map { $0.toHint() },
             reveal: Reveal(photos: allPhotoNames, text: revealText),
             unlockNext: unlockType,
-            passcode: unlockType == .passcode && !passcode.isEmpty ? passcode : nil
+            passcode: unlockType == .passcode && !passcode.isEmpty ? passcode : nil,
+            skipOption: modelSkipOption
         )
     }
 
     static func from(_ clue: Clue) -> EditableClue {
-        EditableClue(
+        // Convert model skip option to editable skip option
+        let editableSkip: EditableSkipOption
+        let skipPwd: String
+        switch clue.skipOption {
+        case .disabled:
+            editableSkip = .disabled
+            skipPwd = ""
+        case .allowed:
+            editableSkip = .allowed
+            skipPwd = ""
+        case .password(let password):
+            editableSkip = .password
+            skipPwd = password
+        }
+
+        return EditableClue(
             clueId: clue.id,
             latitude: String(clue.location.lat),
             longitude: String(clue.location.lng),
@@ -111,7 +151,9 @@ class EditableClue: ObservableObject, Identifiable {
             revealPhotos: [],  // Photos will be loaded separately
             existingPhotoNames: clue.reveal.photos,
             unlockType: clue.unlockNext,
-            passcode: clue.passcode ?? ""
+            passcode: clue.passcode ?? "",
+            skipOption: editableSkip,
+            skipPassword: skipPwd
         )
     }
 }
@@ -162,6 +204,9 @@ class EditableHunt: ObservableObject {
             }
             if clue.unlockType == .passcode && clue.passcode.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 errors.append("Clue \(index + 1): Passcode required when unlock type is passcode")
+            }
+            if clue.skipOption == .password && clue.skipPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                errors.append("Clue \(index + 1): Skip password required when help button requires password")
             }
         }
 

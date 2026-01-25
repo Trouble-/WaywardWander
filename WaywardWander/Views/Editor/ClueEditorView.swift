@@ -51,6 +51,9 @@ struct ClueEditorView: View {
 
             // Unlock type
             unlockTypeSection
+
+            // Skip/Help option
+            skipOptionSection
         }
         .padding()
         .background(Color(.systemBackground))
@@ -265,6 +268,49 @@ struct ClueEditorView: View {
 
                     if clue.passcode.isEmpty {
                         Text("Required when unlock type is passcode")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(AppTheme.secondaryLight)
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(AppTheme.secondaryBorder, lineWidth: 1)
+        )
+    }
+
+    // MARK: - Skip Option Section
+
+    private var skipOptionSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Help Button")
+                .font(.headline)
+
+            Text("Show a 'Stuck?' button if GPS arrival doesn't trigger")
+                .font(.caption)
+                .foregroundColor(.secondary)
+
+            Picker("Help Option", selection: $clue.skipOption) {
+                ForEach(EditableSkipOption.allCases, id: \.self) { option in
+                    Text(option.rawValue).tag(option)
+                }
+            }
+            .pickerStyle(.segmented)
+
+            if clue.skipOption == .password {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Skip Password")
+                        .font(.subheadline.weight(.medium))
+
+                    TextField("Enter password to skip", text: $clue.skipPassword)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                    if clue.skipPassword.isEmpty {
+                        Text("Required when password is selected")
                             .font(.caption)
                             .foregroundColor(.red)
                     }
