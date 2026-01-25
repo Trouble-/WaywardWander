@@ -71,11 +71,10 @@ struct EditableContextMenu: ViewModifier {
 
     func body(content: Content) -> some View {
         content.contextMenu {
-            if isEditable {
-                Button(action: onEdit) {
-                    Label("Edit", systemImage: "pencil")
-                }
+            Button(action: onEdit) {
+                Label("Edit", systemImage: "pencil")
             }
+            .disabled(!isEditable)
 
             Button(action: onShare) {
                 Label("Share", systemImage: "square.and.arrow.up")
