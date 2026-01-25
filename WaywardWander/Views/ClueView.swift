@@ -153,15 +153,13 @@ struct ClueView: View {
                 locationManager.targetLocation = clue.clLocation
                 if hasArrivedAtClue {
                     hasArrived = true
+                } else {
+                    // Check if already within arrival radius when view appears
+                    checkArrival()
                 }
             }
-            .onChange(of: locationManager.distanceToTarget) { _, distance in
-                if let distance = distance, distance <= clue.arrivalRadius, !hasArrived {
-                    withAnimation {
-                        hasArrived = true
-                    }
-                    onMarkArrived()
-                }
+            .onChange(of: locationManager.distanceToTarget) { _, _ in
+                checkArrival()
             }
         }
         .withAppBackground()
@@ -225,6 +223,16 @@ struct ClueView: View {
                         .stroke(AppTheme.infoBorder, lineWidth: 2)
                 )
             }
+        }
+    }
+
+    private func checkArrival() {
+        guard !hasArrived else { return }
+        if let distance = locationManager.distanceToTarget, distance <= clue.arrivalRadius {
+            withAnimation {
+                hasArrived = true
+            }
+            onMarkArrived()
         }
     }
 
