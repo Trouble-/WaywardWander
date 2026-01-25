@@ -3,45 +3,48 @@
 ## Overview
 iOS scavenger hunt app that guides users to GPS locations with progressive hints and a compass.
 
-## Current State: v3 with Quest Creator
-All core features plus quest creation/editing:
+## Current State: v4
+All core features plus quest creation/editing with anti-cheat and help options:
 
 ### Core Features
 - Load journeys from imported files or user-created quests
 - Progressive hint system (text → compass → distance)
-- Compass arrow pointing to target location
+- Compass arrow pointing to target location ("Follow the arrow")
 - GPS arrival detection
 - Photo carousel reveals on arrival (swipeable, with page indicators)
 - Passcode entry to unlock clues
 - Victory screen on completion
 
-### Recent Additions
-- **Quest Creator**: Full quest creation and editing within the app
-  - Create new quests with title, description, and multiple clues
-  - Edit existing user-created quests (long-press context menu)
-  - Location picker with GPS capture or manual coordinate entry
-  - Photo picker for reveal images (library or camera)
-  - Hints editor (text, compass, distance types)
-  - Arrival radius slider (5-100m)
-  - Unlock type selection (automatic or passcode)
-  - Validation before saving
-  - Export/share quests as .wwh bundles
-  - Delete user-created quests
+### Quest Creator
+- Create new quests with title, description, and multiple clues
+- Edit existing editable quests (long-press context menu)
+- Location picker with GPS capture or manual coordinate entry
+- Photo picker for reveal images (library or camera)
+- Hints editor (text, compass, distance types)
+- Arrival radius slider (5-100m)
+- Unlock type selection (automatic or passcode)
+- **Help Button** option per clue (None / Allow Skip / Password Required)
+- Validation before saving
+- Export/share quests as .wwh bundles
+- Delete quests via context menu
+
+### Anti-Cheat System
+- `isEditable` property on quests controls edit access
+- User-created quests are editable by default
+- Exported quests have `isEditable = false` (recipients can't cheat by viewing answers)
+- Completing a quest unlocks editing (so you can see how it was built)
+- Share and Delete always available; Edit only when editable
+
+### Other Features
 - **Home Screen**: Journey selection with branded "Wayward Wander" header and quest cards
 - **Journey Import**: Import .json or .wwh (zip bundle with images) journey files
 - **Progress Persistence**: Journey progress saved to UserDefaults
-  - Arrival state persists for completed clues
-  - Passcodes only need to be entered once
-- **Navigation**: "Home" and "Previous" buttons on all screens for easy navigation
-- **Background Image**: Custom background image on all screens via `.withAppBackground()` modifier
-- **Custom Color Scheme** (defined in Theme.swift):
-  - Primary accent: Dark teal
-  - Success/arrival: Mint green (#3DB489)
-  - Info/hints: Cobalt blue (#1338BE)
-  - Trophy: Harvest gold (#DA9100)
+- **Navigation**: "Home" and "Previous" buttons on all screens
+- **"Stuck?" Button**: Optional help button when GPS arrival doesn't trigger
+- **Background Image**: Custom background on all screens via `.withAppBackground()` modifier
+- **Custom Color Scheme** (defined in Theme.swift)
 - **App Icon**: Custom app icon (ww_icon.png)
-- **UI Polish**: Thicker borders on UI elements for better visibility
-- **Debug Mode**: "Simulate Arrival" button in DEBUG builds for testing without GPS
+- **Debug Mode**: "Simulate Arrival" button in DEBUG builds
 
 ## Project Structure
 ```

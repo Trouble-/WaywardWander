@@ -7,8 +7,6 @@ struct PhotoPickerView: View {
     let huntId: String
 
     @State private var selectedItems: [PhotosPickerItem] = []
-    @State private var showingCamera = false
-    @State private var showingSourcePicker = false
 
     private let columns = [
         GridItem(.adaptive(minimum: 80, maximum: 100), spacing: 8)
@@ -52,24 +50,8 @@ struct PhotoPickerView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(AppTheme.secondaryBorder, lineWidth: 1)
         )
-        .confirmationDialog("Add Photo", isPresented: $showingSourcePicker) {
-            Button("Photo Library") {
-                // PhotosPicker is triggered separately
-            }
-            Button("Take Photo") {
-                showingCamera = true
-            }
-            Button("Cancel", role: .cancel) { }
-        }
-        .photosPicker(isPresented: .constant(false), selection: $selectedItems, matching: .images)
         .onChange(of: selectedItems) { _, newItems in
             loadSelectedPhotos(newItems)
-        }
-        .fullScreenCover(isPresented: $showingCamera) {
-            CameraView { image in
-                let filename = "photo_\(UUID().uuidString.prefix(8)).jpg"
-                photos.append(PhotoItem(image: image, filename: filename))
-            }
         }
     }
 
@@ -201,47 +183,6 @@ struct ExistingPhotoThumbnail: View {
         if let data = try? Data(contentsOf: directPath),
            let image = UIImage(data: data) {
             loadedImage = image
-        }
-    }
-}
-
-// MARK: - Camera View
-
-struct CameraView: UIViewControllerRepresentable {
-    let onCapture: (UIImage) -> Void
-    @Environment(\.dismiss) private var dismiss
-
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.sourceType = .camera
-        picker.delegate = context.coordinator
-        return picker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(onCapture: onCapture, dismiss: dismiss)
-    }
-
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let onCapture: (UIImage) -> Void
-        let dismiss: DismissAction
-
-        init(onCapture: @escaping (UIImage) -> Void, dismiss: DismissAction) {
-            self.onCapture = onCapture
-            self.dismiss = dismiss
-        }
-
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let image = info[.originalImage] as? UIImage {
-                onCapture(image)
-            }
-            dismiss()
-        }
-
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            dismiss()
         }
     }
 }
