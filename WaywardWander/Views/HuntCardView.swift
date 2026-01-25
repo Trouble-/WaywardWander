@@ -69,24 +69,21 @@ struct EditableContextMenu: ViewModifier {
     let onShare: () -> Void
     let onDelete: () -> Void
 
-    @ViewBuilder
     func body(content: Content) -> some View {
-        if isEditable {
-            content.contextMenu {
+        content.contextMenu {
+            if isEditable {
                 Button(action: onEdit) {
                     Label("Edit", systemImage: "pencil")
                 }
-
-                Button(action: onShare) {
-                    Label("Share", systemImage: "square.and.arrow.up")
-                }
-
-                Button(role: .destructive, action: onDelete) {
-                    Label("Delete", systemImage: "trash")
-                }
             }
-        } else {
-            content
+
+            Button(action: onShare) {
+                Label("Share", systemImage: "square.and.arrow.up")
+            }
+
+            Button(role: .destructive, action: onDelete) {
+                Label("Delete", systemImage: "trash")
+            }
         }
     }
 }
