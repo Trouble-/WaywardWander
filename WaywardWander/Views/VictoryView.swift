@@ -92,34 +92,28 @@ struct VictoryView: View {
                 VStack(spacing: 12) {
                     Button(action: onBackToHome) {
                         HStack {
-                            Image(systemName: "house.fill")
                             Text("Home")
+                                .fontWeight(.semibold)
+                            Image(systemName: "house.fill")
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.clear)
-                        .foregroundColor(AppTheme.accent)
+                        .background(AppTheme.accent)
+                        .foregroundColor(.white)
                         .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(AppTheme.accent, lineWidth: 2)
-                        )
                     }
 
                     Button(action: onRestart) {
                         HStack {
-                            Image(systemName: "arrow.counterclockwise")
                             Text("Start Over")
+                                .fontWeight(.semibold)
+                            Image(systemName: "arrow.counterclockwise")
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.clear)
-                        .foregroundColor(AppTheme.accent)
+                        .background(AppTheme.accent)
+                        .foregroundColor(.white)
                         .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(AppTheme.accent, lineWidth: 2)
-                        )
                     }
                 }
                 .padding(.horizontal)
