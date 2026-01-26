@@ -1,0 +1,116 @@
+{
+  "id": "dc-tutorial-quest",
+  "title": "Welcome to Wayward Wander",
+  "description": "A quick tutorial quest in Washington, DC. Learn how to use the app while visiting iconic landmarks. Use the 'Stuck?' button to progress if you're not in DC!",
+  "isEditable": true,
+  "clues": [
+    {
+      "id": 0,
+      "location": {
+        "lat": 38.8895,
+        "lng": -77.0353
+      },
+      "arrivalRadius": 50,
+      "initialClue": "Welcome to Wayward Wander!\n\nThis tutorial will teach you how scavenger hunts work in this app.\n\nYour first destination: Find the tall white obelisk that honors America's first president. It stands at the center of the National Mall and can be seen from miles away.",
+      "hints": [
+        {
+          "type": "text",
+          "content": "TUTORIAL: Hints are revealed one at a time. Tap 'Get Hint' when you need help. This landmark is 555 feet tall and made of marble."
+        },
+        {
+          "type": "compass",
+          "content": null
+        },
+        {
+          "type": "distance",
+          "content": null
+        },
+        {
+          "type": "text",
+          "content": "NOT IN DC? No problem! Tap the 'Stuck?' button below to skip ahead and continue the tutorial."
+        }
+      ],
+      "reveal": {
+        "photos": [],
+        "text": "You found the Washington Monument!\n\nWhen you arrive at a location, you'll see this 'reveal' screen with photos and information about what you discovered.\n\nTap 'Continue' below to proceed to the next clue."
+      },
+      "unlockNext": "automatic",
+      "passcode": null,
+      "skipOption": {
+        "type": "allowed"
+      }
+    },
+    {
+      "id": 1,
+      "location": {
+        "lat": 38.8893,
+        "lng": -77.0502
+      },
+      "arrivalRadius": 50,
+      "initialClue": "Excellent progress!\n\nNow head west along the Reflecting Pool to find the memorial honoring the 16th President, who preserved the Union during the Civil War.\n\nHe sits in contemplation, watching over the Mall.",
+      "hints": [
+        {
+          "type": "text",
+          "content": "TUTORIAL: Different hint types help in different ways. Text hints give clues, the compass points the direction, and distance shows how far away you are."
+        },
+        {
+          "type": "compass",
+          "content": null
+        },
+        {
+          "type": "distance",
+          "content": null
+        },
+        {
+          "type": "text",
+          "content": "The memorial features a 19-foot marble statue. Remember: tap 'Stuck?' at the bottom if you want to skip ahead!"
+        }
+      ],
+      "reveal": {
+        "photos": [],
+        "text": "You found the Lincoln Memorial!\n\nDid you notice how the compass arrow guided you here? It always points toward your destination.\n\nOne more stop to complete the tutorial!"
+      },
+      "unlockNext": "automatic",
+      "passcode": null,
+      "skipOption": {
+        "type": "allowed"
+      }
+    },
+    {
+      "id": 2,
+      "location": {
+        "lat": 38.8894,
+        "lng": -77.0407
+      },
+      "arrivalRadius": 50,
+      "initialClue": "Final destination!\n\nHead back east toward the Washington Monument. Between Lincoln and Washington, you'll find a memorial with a fountain, surrounded by pillars representing each U.S. state and territory.\n\nIt honors the generation that fought in the 1940s.",
+      "hints": [
+        {
+          "type": "text",
+          "content": "TUTORIAL: Quest creators can add passcodes to clues. You might need to find a word at the location or solve a puzzle to proceed."
+        },
+        {
+          "type": "compass",
+          "content": null
+        },
+        {
+          "type": "distance",
+          "content": null
+        },
+        {
+          "type": "text",
+          "content": "Look for the World War II Memorial with its Atlantic and Pacific pavilions. Use 'Stuck?' to finish the tutorial!"
+        }
+      ],
+      "reveal": {
+        "photos": [],
+        "text": "You found the World War II Memorial!\n\nCongratulations on completing the tutorial!\n\nNow you know how Wayward Wander works:\n• Follow clues to find locations\n• Use hints when you need help\n• The compass and distance guide you\n• Discover reveals when you arrive\n\nTry creating your own quest, or import quests from friends!"
+      },
+      "unlockNext": "automatic",
+      "passcode": null,
+      "skipOption": {
+        "type": "allowed"
+      }
+    }
+  ]
+}
