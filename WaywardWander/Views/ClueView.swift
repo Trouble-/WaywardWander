@@ -154,7 +154,7 @@ struct ClueView: View {
                     Button(action: handleStuckButton) {
                         Text("Stuck?")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(Color(white: 0.25))
                     }
                     .padding(.top, 20)
                 }

@@ -11,7 +11,7 @@
         "lng": -77.0353
       },
       "arrivalRadius": 50,
-      "initialClue": "Welcome to Wayward Wander!\n\nThis tutorial will teach you how scavenger hunts work in this app.\n\nYour first destination: Find the tall white obelisk that honors America's first president. It stands at the center of the National Mall and can be seen from miles away.",
+      "initialClue": "Your first destination: Find the tall white obelisk that honors America's first president. It stands at the center of the National Mall and can be seen from miles away.",
       "hints": [
         {
           "type": "text",
@@ -87,7 +87,7 @@
       "hints": [
         {
           "type": "text",
-          "content": "TUTORIAL: Quest creators can add passcodes to clues. You might need to find a word at the location or solve a puzzle to proceed."
+          "content": "TUTORIAL: Quest creators can add passcodes to clues. You might need to find a word at the location or receive a passcode from your guide."
         },
         {
           "type": "compass",
