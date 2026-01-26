@@ -153,7 +153,8 @@ struct ClueView: View {
                 if !hasArrived && clue.skipOption != .disabled {
                     Button(action: handleStuckButton) {
                         Text("Stuck?")
-                            .font(.caption)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
                             .foregroundColor(Color(white: 0.25))
                     }
                     .padding(.top, 20)
