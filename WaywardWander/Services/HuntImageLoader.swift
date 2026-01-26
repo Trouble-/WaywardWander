@@ -7,9 +7,33 @@ struct HuntImageLoader {
             return documentsImage
         }
 
-        // Fall back to bundled assets
+        // Check app bundle for bundled quest images
+        if let bundleImage = loadFromBundle(imageName: imageName) {
+            return bundleImage
+        }
+
+        // Fall back to asset catalog
         if let bundledImage = UIImage(named: imageName) {
             return bundledImage
+        }
+
+        return nil
+    }
+
+    private static func loadFromBundle(imageName: String) -> UIImage? {
+        // Try with the name as-is (might include extension)
+        if let url = Bundle.main.url(forResource: imageName, withExtension: nil),
+           let image = UIImage(contentsOfFile: url.path) {
+            return image
+        }
+
+        // Try stripping extension and using common formats
+        let baseName = (imageName as NSString).deletingPathExtension
+        for ext in ["jpg", "jpeg", "png", "heic"] {
+            if let url = Bundle.main.url(forResource: baseName, withExtension: ext),
+               let image = UIImage(contentsOfFile: url.path) {
+                return image
+            }
         }
 
         return nil
