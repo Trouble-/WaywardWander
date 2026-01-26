@@ -31,7 +31,7 @@
         }
       ],
       "reveal": {
-        "photos": [],
+        "photos": ["washington_monument_1.jpg", "washington_monument_2.jpg"],
         "text": "You found the Washington Monument!\n\nWhen you arrive at a location, you'll see this 'reveal' screen with photos and information about what you discovered.\n\nTap 'Continue' below to proceed to the next clue."
       },
       "unlockNext": "automatic",
@@ -67,7 +67,7 @@
         }
       ],
       "reveal": {
-        "photos": [],
+        "photos": ["lincoln_memorial.jpg"],
         "text": "You found the Lincoln Memorial!\n\nDid you notice how the compass arrow guided you here? It always points toward your destination.\n\nOne more stop to complete the tutorial!"
       },
       "unlockNext": "automatic",
@@ -103,7 +103,7 @@
         }
       ],
       "reveal": {
-        "photos": [],
+        "photos": ["wwii_memorial.jpg"],
         "text": "You found the World War II Memorial!\n\nCongratulations on completing the tutorial!\n\nNow you know how Wayward Wander works:\n• Follow clues to find locations\n• Use hints when you need help\n• The compass and distance guide you\n• Discover reveals when you arrive\n\nTry creating your own quest, or import quests from friends!"
       },
       "unlockNext": "automatic",
