@@ -2,7 +2,7 @@
   "id": "dc-tutorial-quest",
   "title": "Welcome to Wayward Wander",
   "description": "A quick tutorial quest in Washington, DC. Learn how to use the app while visiting iconic landmarks. Use the 'Stuck?' button to progress if you're not in DC!",
-  "isEditable": true,
+  "isEditable": false,
   "clues": [
     {
       "id": 0,
@@ -104,7 +104,7 @@
       ],
       "reveal": {
         "photos": ["wwii_memorial.jpg"],
-        "text": "You found the World War II Memorial!\n\nCongratulations on completing the tutorial!\n\nNow you know how Wayward Wander works:\n• Follow clues to find locations\n• Use hints when you need help\n• The compass and distance guide you\n• Discover reveals when you arrive\n\nTry creating your own quest, or import quests from friends!"
+        "text": "You found the World War II Memorial!\n\nCongratulations on completing the tutorial!\n\nNow you know how Wayward Wander works:\n• Follow clues to find locations\n• Use hints when you need help\n• The compass and distance guide you\n• Discover reveals when you arrive\n\nTip: Long-press any quest on the home screen to share or delete it. Once you've completed a quest, you can also edit it to see how it was built!\n\nTry creating your own quest, or import quests from friends!"
       },
       "unlockNext": "automatic",
       "passcode": null,
