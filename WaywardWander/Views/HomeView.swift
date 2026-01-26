@@ -12,7 +12,6 @@ struct HomeView: View {
     @State private var huntToDelete: Hunt?
     @State private var showingDeleteConfirmation = false
     @State private var shareItem: ShareItem?
-    @State private var showingPrivacyPolicy = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -65,9 +64,6 @@ struct HomeView: View {
         .sheet(item: $shareItem) { item in
             ShareSheet(activityItems: [item.url])
         }
-        .sheet(isPresented: $showingPrivacyPolicy) {
-            PrivacyPolicyView()
-        }
         .withAppBackground()
     }
 
@@ -86,13 +82,6 @@ struct HomeView: View {
             Text("Go on an adventure")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
-
-            Button(action: { showingPrivacyPolicy = true }) {
-                Text("Privacy Policy")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.top, 4)
         }
     }
 
