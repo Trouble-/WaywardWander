@@ -19,7 +19,7 @@ All core features plus quest creation/editing with anti-cheat and help options:
 - Create new quests with title, description, and multiple clues
 - Edit existing editable quests (long-press context menu)
 - Location picker with GPS capture or manual coordinate entry
-- Photo picker for reveal images (library or camera)
+- Photo picker for reveal images (from photo library)
 - Hints editor (text, compass, distance types)
 - Arrival radius slider (5-100m)
 - Unlock type selection (automatic or passcode)
@@ -64,6 +64,7 @@ WaywardWander/
 │   ├── PasscodeView.swift           # Unlock next clue
 │   ├── VictoryView.swift            # Journey complete
 │   ├── BackgroundView.swift         # Reusable background component
+│   ├── PrivacyPolicyView.swift      # In-app privacy policy
 │   └── Editor/
 │       ├── QuestEditorView.swift    # Main quest editor container
 │       ├── ClueEditorView.swift     # Single clue editor
@@ -73,11 +74,34 @@ WaywardWander/
 │   ├── LocationManager.swift        # CoreLocation wrapper
 │   ├── HuntStore.swift              # Manages quests: load, save, import, export
 │   ├── HuntProgressManager.swift    # Persists journey progress to UserDefaults
-│   └── HuntImageLoader.swift        # Loads images from Documents or Assets
+│   └── HuntImageLoader.swift        # Loads images from Documents, Bundle, or Assets
+├── dc_tutorial.json                 # Bundled tutorial quest (DC landmarks)
+├── tutorial_images/                 # Images for tutorial quest
+│   ├── washington_monument_1.jpg
+│   ├── washington_monument_2.jpg
+│   ├── lincoln_memorial.jpg
+│   └── wwii_memorial.jpg
+├── docs/
+│   └── privacy.html                 # Privacy policy for GitHub Pages / App Store
 └── Assets.xcassets/
     ├── AppIcon.appiconset/          # App icon (ww_icon.png)
     └── home_background.imageset/    # Custom background image
 ```
+
+## Bundled Tutorial Quest
+
+The app includes a tutorial quest (`dc_tutorial.json`) that teaches users how the app works:
+
+- **Location**: Washington, DC (Washington Monument → Lincoln Memorial → WWII Memorial)
+- **Purpose**: Demonstrates all app features with instructional text in hints
+- **Skip Option**: All clues have "Allow Skip" enabled so anyone can complete it regardless of location
+- **Images**: 4 photos in `tutorial_images/` folder (must be added to Xcode target)
+
+To include the tutorial in the app bundle:
+1. Add `dc_tutorial.json` to Xcode project (ensure target is checked)
+2. Add all images from `tutorial_images/` to Xcode project (ensure target is checked)
+
+The `HuntImageLoader` will find images in: Documents → App Bundle → Asset Catalog
 
 ## Dependencies
 - **ZIPFoundation**: Required for .wwh bundle import/export (add via Xcode: File > Add Package Dependencies > https://github.com/weichsel/ZIPFoundation)
@@ -106,6 +130,21 @@ Zip file containing:
 - Use "Dev: Simulate Arrival" button in DEBUG builds to test without GPS
 - Set simulated location in Xcode for location-based testing
 - Import test journeys via Files app or share sheet
+
+## App Store Preparation
+
+### Privacy Policy
+- In-app: `PrivacyPolicyView.swift` (accessible from home screen)
+- Web: `docs/privacy.html` hosted via GitHub Pages
+- URL: https://trouble-.github.io/WaywardWander/privacy.html
+
+### Required Permissions
+- **Location** (When In Use): Already configured in project settings
+- No camera permission needed (photo library only uses PHPicker)
+
+### Screenshots Needed
+- 6.7" iPhone (1290 x 2796) - required
+- 12.9" iPad Pro (2048 x 2732) - if supporting iPad
 
 ## GitHub
 https://github.com/Trouble-/WaywardWander
