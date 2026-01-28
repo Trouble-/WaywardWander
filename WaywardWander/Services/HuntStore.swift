@@ -284,6 +284,13 @@ class HuntStore: ObservableObject {
         return false
     }
 
+    func isBundled(_ huntId: String) -> Bool {
+        // Check if hunt exists in Documents - if not, it's bundled
+        let huntDir = huntsDirectory.appendingPathComponent(huntId, isDirectory: true)
+        let huntJsonURL = huntDir.appendingPathComponent("hunt.json")
+        return !fileManager.fileExists(atPath: huntJsonURL.path)
+    }
+
     func markHuntEditable(_ huntId: String) {
         let huntDir = huntsDirectory.appendingPathComponent(huntId, isDirectory: true)
         let huntJsonURL = huntDir.appendingPathComponent("hunt.json")

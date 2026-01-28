@@ -3,6 +3,7 @@ import SwiftUI
 struct HuntCardView: View {
     let hunt: Hunt
     let isEditable: Bool
+    let isBundled: Bool
     let onSelect: () -> Void
     let onEdit: () -> Void
     let onDelete: () -> Void
@@ -56,6 +57,7 @@ struct HuntCardView: View {
         .buttonStyle(.plain)
         .modifier(EditableContextMenu(
             isEditable: isEditable,
+            isBundled: isBundled,
             onEdit: onEdit,
             onShare: onShare,
             onDelete: onDelete
@@ -65,6 +67,7 @@ struct HuntCardView: View {
 
 struct EditableContextMenu: ViewModifier {
     let isEditable: Bool
+    let isBundled: Bool
     let onEdit: () -> Void
     let onShare: () -> Void
     let onDelete: () -> Void
@@ -79,10 +82,12 @@ struct EditableContextMenu: ViewModifier {
             Button(action: onShare) {
                 Label("Share", systemImage: "square.and.arrow.up")
             }
+            .disabled(isBundled)
 
             Button(role: .destructive, action: onDelete) {
                 Label("Delete", systemImage: "trash")
             }
+            .disabled(isBundled)
         }
     }
 }

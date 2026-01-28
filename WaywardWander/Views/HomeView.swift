@@ -93,6 +93,7 @@ struct HomeView: View {
                     HuntCardView(
                         hunt: hunt,
                         isEditable: huntStore.isEditable(huntId),
+                        isBundled: huntStore.isBundled(huntId),
                         onSelect: {
                             onSelectHunt(hunt)
                         },
