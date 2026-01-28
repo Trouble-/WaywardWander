@@ -124,31 +124,6 @@ struct ClueView: View {
                     )
                 }
 
-                #if DEBUG
-                if !hasArrived {
-                    Button(action: {
-                        withAnimation {
-                            hasArrived = true
-                        }
-                        onMarkArrived()
-                    }) {
-                        HStack {
-                            Image(systemName: "hammer.fill")
-                            Text("Dev: Simulate Arrival")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.purple.opacity(0.1))
-                        .foregroundColor(.purple)
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.purple.opacity(0.5), lineWidth: 2)
-                        )
-                    }
-                }
-                #endif
-
                 // Stuck? help button (only if enabled and not yet arrived)
                 if !hasArrived && clue.skipOption != .disabled {
                     Button(action: handleStuckButton) {

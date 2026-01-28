@@ -44,7 +44,6 @@ All core features plus quest creation/editing with anti-cheat and help options:
 - **Background Image**: Custom background on all screens via `.withAppBackground()` modifier
 - **Custom Color Scheme** (defined in Theme.swift)
 - **App Icon**: Custom app icon (ww_icon.png)
-- **Debug Mode**: "Simulate Arrival" button in DEBUG builds
 
 ## Project Structure
 ```
