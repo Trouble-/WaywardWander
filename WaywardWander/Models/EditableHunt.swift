@@ -96,6 +96,8 @@ class EditableClue: ObservableObject, Identifiable {
     func toClue(photoFilenames: [String]) -> Clue {
         let lat = Double(latitude) ?? 0
         let lng = Double(longitude) ?? 0
+        let cleanedPasscode = passcode.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedSkipPassword = skipPassword.trimmingCharacters(in: .whitespacesAndNewlines)
 
         // Combine existing photos with new photo filenames
         let allPhotoNames = existingPhotoNames + photoFilenames
@@ -108,7 +110,7 @@ class EditableClue: ObservableObject, Identifiable {
         case .allowed:
             modelSkipOption = .allowed
         case .password:
-            modelSkipOption = .password(skipPassword)
+            modelSkipOption = .password(cleanedSkipPassword)
         }
 
         return Clue(
@@ -119,7 +121,7 @@ class EditableClue: ObservableObject, Identifiable {
             hints: hints.map { $0.toHint() },
             reveal: Reveal(photos: allPhotoNames, text: revealText),
             unlockNext: unlockType,
-            passcode: unlockType == .passcode && !passcode.isEmpty ? passcode : nil,
+            passcode: unlockType == .passcode && !cleanedPasscode.isEmpty ? cleanedPasscode : nil,
             skipOption: modelSkipOption
         )
     }

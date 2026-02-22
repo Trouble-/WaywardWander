@@ -265,6 +265,8 @@ struct ClueEditorView: View {
 
                     TextField("Enter passcode", text: $clue.passcode)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
 
                     if clue.passcode.isEmpty {
                         Text("Required when unlock type is passcode")
@@ -308,6 +310,8 @@ struct ClueEditorView: View {
 
                     TextField("Enter password to skip", text: $clue.skipPassword)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
 
                     if clue.skipPassword.isEmpty {
                         Text("Required when password is selected")

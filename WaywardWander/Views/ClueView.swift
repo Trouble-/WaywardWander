@@ -159,16 +159,8 @@ struct ClueView: View {
             } message: {
                 Text("Are you sure you want to skip ahead? This will mark this clue as complete.")
             }
-            .alert("Enter Password", isPresented: $showingSkipPassword) {
-                SecureField("Password", text: $skipPasswordEntry)
-                Button("Submit") {
-                    checkSkipPassword()
-                }
-                Button("Cancel", role: .cancel) {
-                    skipPasswordEntry = ""
-                }
-            } message: {
-                Text("Enter the password to skip this clue.")
+            .sheet(isPresented: $showingSkipPassword) {
+                skipPasswordSheet
             }
             .alert("Wrong Password", isPresented: $showingWrongPassword) {
                 Button("OK", role: .cancel) { }
@@ -240,6 +232,45 @@ struct ClueView: View {
         }
     }
 
+    private var skipPasswordSheet: some View {
+        NavigationStack {
+            VStack(spacing: 16) {
+                Text("Enter the password to skip this clue.")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+
+                SecureField("Password", text: $skipPasswordEntry)
+                    .textFieldStyle(.roundedBorder)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+
+                Button(action: submitSkipPassword) {
+                    Text("Submit")
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(skipPasswordEntry.isEmpty ? Color.gray : AppTheme.accent)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .disabled(skipPasswordEntry.isEmpty)
+            }
+            .padding()
+            .navigationTitle("Enter Password")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        skipPasswordEntry = ""
+                        showingSkipPassword = false
+                    }
+                }
+            }
+        }
+        .presentationDetents([.medium])
+    }
+
     private func checkArrival() {
         guard !hasArrived else { return }
         if let distance = locationManager.distanceToTarget, distance <= clue.arrivalRadius {
@@ -270,7 +301,7 @@ struct ClueView: View {
 
     private func checkSkipPassword() {
         if case .password(let correctPassword) = clue.skipOption {
-            if skipPasswordEntry.lowercased() == correctPassword.lowercased() {
+            if normalizedPassword(skipPasswordEntry) == normalizedPassword(correctPassword) {
                 skipPasswordEntry = ""
                 performSkip()
             } else {
@@ -278,6 +309,18 @@ struct ClueView: View {
                 showingWrongPassword = true
             }
         }
+    }
+
+    private func submitSkipPassword() {
+        checkSkipPassword()
+        showingSkipPassword = false
+    }
+
+    private func normalizedPassword(_ value: String) -> String {
+        value
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .precomposedStringWithCanonicalMapping
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "en_US_POSIX"))
     }
 
     private func revealNextHint() {
