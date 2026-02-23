@@ -8,6 +8,7 @@ struct HuntCardView: View {
     let onEdit: () -> Void
     let onDelete: () -> Void
     let onShare: () -> Void
+    let onReset: () -> Void
 
     var body: some View {
         Button(action: onSelect) {
@@ -60,7 +61,8 @@ struct HuntCardView: View {
             isBundled: isBundled,
             onEdit: onEdit,
             onShare: onShare,
-            onDelete: onDelete
+            onDelete: onDelete,
+            onReset: onReset
         ))
     }
 }
@@ -71,6 +73,7 @@ struct EditableContextMenu: ViewModifier {
     let onEdit: () -> Void
     let onShare: () -> Void
     let onDelete: () -> Void
+    let onReset: () -> Void
 
     func body(content: Content) -> some View {
         content.contextMenu {
@@ -83,6 +86,10 @@ struct EditableContextMenu: ViewModifier {
                 Label("Share", systemImage: "square.and.arrow.up")
             }
             .disabled(isBundled)
+
+            Button(action: onReset) {
+                Label("Reset", systemImage: "arrow.counterclockwise")
+            }
 
             Button(role: .destructive, action: onDelete) {
                 Label("Delete", systemImage: "trash")

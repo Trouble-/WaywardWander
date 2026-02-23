@@ -42,4 +42,9 @@ class HuntProgressManager {
     func clearProgress() {
         UserDefaults.standard.removeObject(forKey: progressKey)
     }
+
+    func clearProgress(for huntId: String) {
+        guard let progress = loadProgress(), progress.huntId == huntId else { return }
+        clearProgress()
+    }
 }

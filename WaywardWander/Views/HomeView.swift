@@ -11,6 +11,8 @@ struct HomeView: View {
     @State private var showingImportError = false
     @State private var huntToDelete: Hunt?
     @State private var showingDeleteConfirmation = false
+    @State private var huntToReset: Hunt?
+    @State private var showingResetConfirmation = false
     @State private var shareItem: ShareItem?
 
     var body: some View {
@@ -61,6 +63,19 @@ struct HomeView: View {
         } message: {
             Text("Are you sure you want to delete \"\(huntToDelete?.title ?? "this quest")\"? This cannot be undone.")
         }
+        .alert("Reset Progress?", isPresented: $showingResetConfirmation) {
+            Button("Reset", role: .destructive) {
+                if let hunt = huntToReset {
+                    HuntProgressManager.shared.clearProgress(for: hunt.id)
+                }
+                huntToReset = nil
+            }
+            Button("Cancel", role: .cancel) {
+                huntToReset = nil
+            }
+        } message: {
+            Text("This will reset your progress for \"\(huntToReset?.title ?? "this quest")\" and start from the beginning.")
+        }
         .sheet(item: $shareItem) { item in
             ShareSheet(activityItems: [item.url])
         }
@@ -106,6 +121,10 @@ struct HomeView: View {
                         },
                         onShare: {
                             shareQuest(hunt)
+                        },
+                        onReset: {
+                            huntToReset = hunt
+                            showingResetConfirmation = true
                         }
                     )
                     .id(huntId)

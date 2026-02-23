@@ -105,7 +105,7 @@ struct VictoryView: View {
 
                     Button(action: onRestart) {
                         HStack {
-                            Text("Start Over")
+                            Text("Reset & Start Over")
                                 .fontWeight(.semibold)
                             Image(systemName: "arrow.counterclockwise")
                         }
